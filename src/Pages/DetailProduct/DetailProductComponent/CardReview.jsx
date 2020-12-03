@@ -2,7 +2,7 @@ import React from 'react'
 import MdStar from 'react-ionicons/lib/MdStar'
 import MdStarOutline from 'react-ionicons/lib/MdStarOutline'
 
-const CardReview = ({rating, review}) => {
+const CardReview = ({rating, review, onClick}) => {
     return (
         <div className='row'>
             <div className='col-md-6' style={{padding : 14}}>
@@ -31,7 +31,7 @@ const CardReview = ({rating, review}) => {
                         </span>
                         <p style={{fontSize : 14, marginTop : 5}}>Overall rating based on {review && review.length} reviews</p>
                     </span>
-                    <div className='border pt-2 pb-2 pl-5 pr-5'>
+                    <div onClick={onClick} className='border pt-2 pb-2 pl-5 pr-5 '>
                         <p style={{fontSize : 14}}>Leave Your Own</p>
                     </div>
 

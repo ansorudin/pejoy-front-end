@@ -19,7 +19,7 @@ export const ImageGroup = ({data}) => {
                         return(
                             <span>
                                 <img 
-                                className='child-image'
+                                className={val.url === imgParent ? 'child-image child-image-active' : 'child-image '}
                                 src={ApiUrl + 'public/product/' + val.url}
                                 onClick={() => setImgParent(val.url)}
                                  />

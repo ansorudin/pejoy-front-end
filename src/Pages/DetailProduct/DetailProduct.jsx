@@ -17,6 +17,7 @@ import ModalCheckout from './DetailProductComponent/ModalToCart'
 import { css } from "@emotion/core";
 import BeatLoader from "react-spinners/BeatLoader";
 import { Link, Redirect } from 'react-router-dom'
+import ModalAddReview from './DetailProductComponent/ModalAddReview'
 
 const override = css`
   display: block;
@@ -43,6 +44,7 @@ const DetailProduct = (props) => {
     const [review, setReview] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [openModalReview, setOpenModalReview] = useState(false)
 
     const [dataSimilar, setDataSimilar] = useState(null)
 
@@ -126,6 +128,7 @@ const DetailProduct = (props) => {
     
     return (
         <div className='container' style={{paddingTop : 120}}>
+            <ModalAddReview openModal={openModalReview} product_id={props.match.params.id} url={dataApi.image && dataApi.image[0].url} />
             <ModalCheckout 
             isOpen={modalOpen}
             imageModal={dataApi.image && dataApi.image[0].url}
@@ -161,9 +164,9 @@ const DetailProduct = (props) => {
                         }
                         {
                             review ?
-                            <CardReview review={review} rating={dataApi.avgRating && dataApi.avgRating} />
+                            <CardReview onClick={() => setOpenModalReview(!openModalReview)} review={review} rating={dataApi.avgRating && dataApi.avgRating} />
                             :
-                            <div className="border pr-5 pl-5 pt-2 pb-2 mt-3 mb-3" style={{display : 'inline-block'}}>
+                            <div onClick={() => setOpenModalReview(!openModalReview)} className="border pr-5 pl-5 pt-2 pb-2 mt-3 mb-3" style={{display : 'inline-block'}}>
                                 <p>Add your Review</p>
                             </div>
 
@@ -214,11 +217,11 @@ const DetailProduct = (props) => {
                                 dataApi.productInfo && dataApi.size && dataApi.productInfo.discount === 0 ?
                                 <p 
                                 style={{fontSize : 18}}>
-                                    Rp. {size.uk === 'Pick a Size' ? (dataApi.size[0].price).toLocaleString('id-ID'): size.price.toLocaleString('id-ID') }
+                                    Rp. {size.uk === 'Pick a Size' ? (parseInt(dataApi.size[0].price)).toLocaleString('id-ID'): size.price.toLocaleString('id-ID') }
                                 </p>
                                 :
                                 <span>
-                                    <p style={{fontSize : 18}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (dataApi.size[0].price).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
+                                    <p style={{fontSize : 18}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (parseInt(dataApi.size[0].price)).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
                                     <p style={{fontSize : 18}}>
                                         Now Rp.
                                         {
