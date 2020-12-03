@@ -8,6 +8,7 @@ import { ApiUrl } from '../../../Constant/ApiUrl'
 import { updateQty, deleteCart } from '../../../Redux/Actions/Products/CartActions'
 import Swal from 'sweetalert2'
 import Axios from 'axios'
+import { Link } from 'react-router-dom'
 
 
 
@@ -50,8 +51,6 @@ const CardCart = ({deleteCart,stateDeleteCart, stateUpdateQty, updateQty, produc
             }
           })
     }
-
-    console.log(stateDeleteCart.data)
     
     return (
         <div className='row border mb-3'>
@@ -72,7 +71,9 @@ const CardCart = ({deleteCart,stateDeleteCart, stateUpdateQty, updateQty, produc
                     <p className='aa-option-cart'>Size : {size}</p>
                     <p className='aa-option-cart'>Estimated Delivery Date : {est && moment(new Date()).add(est, 'days').format('L')}</p>
                     <p className='aa-option-cart shipping-cart'>*Shipping from <span style={{textDecoration : 'underline'}}>{cityGudang && cityGudang}</span> warehouse to your shipping address</p>
-                    <p className='aa-option-cart-smaller'>Change shipping Address ?</p>
+                    <Link to='/member/shipping-address'>
+                        <p className='aa-option-cart-smaller'>Change shipping Address ?</p>
+                    </Link>
                 </div>
 
             </div>

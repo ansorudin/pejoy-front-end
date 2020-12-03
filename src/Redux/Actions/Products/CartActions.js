@@ -1,6 +1,6 @@
 import Axios from 'axios';
 import { ApiUrl } from '../../../Constant/ApiUrl';
-import { ADD_CART_ERROR, ADD_CART_LOADED, ADD_CART_LOADING, CART_ERROR, CART_LOADED, CART_LOADING, DELETE_CART_ERROR, DELETE_CART_LOADED, DELETE_CART_LOADING, UPDATE_CART_ERROR, UPDATE_CART_LOADED, UPDATE_CART_LOADING } from './ActionTypes';
+import { ADD_CART_ERROR, ADD_CART_LOADED, ADD_CART_LOADING, ADD_TRANSACTION_ERROR, ADD_TRANSACTION_LOADED, CART_ERROR, CART_LOADED, CART_LOADING, DELETE_CART_ERROR, DELETE_CART_LOADED, DELETE_CART_LOADING, UPDATE_CART_ERROR, UPDATE_CART_LOADED, UPDATE_CART_LOADING } from './ActionTypes';
 
 
 export const getCartData = (token) => {
@@ -103,3 +103,16 @@ export const addCartGagal = (text) => {
     }
 }
 
+export const addTransactionSuccess = (text) => {
+    return{
+        type : ADD_TRANSACTION_LOADED,
+        payload : text
+    }
+}
+
+export const addTransactionGagal = (text) => {
+    return{
+        type : ADD_TRANSACTION_ERROR,
+        payload : text
+    }
+}

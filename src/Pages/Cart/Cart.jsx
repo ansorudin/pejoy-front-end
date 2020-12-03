@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import { ApiUrl } from '../../Constant/ApiUrl'
 import './Cart.css'
 import CardCart from './CartComponent/CardCart'
-import {deleteCart, getCartData} from './../../Redux/Actions/Products/CartActions'
+import {deleteCart, getCartData, addTransactionSuccess, addTransactionGagal} from './../../Redux/Actions/Products/CartActions'
 import { Link } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
 import { css } from "@emotion/core";
@@ -17,7 +17,7 @@ const override = css`
   border-color: red;
 `;
 
-const Cart = ({stateDeleteCart ,updateQty,dataCart, getCartData, stateAddCart}) => {
+const Cart = ({stateAddTransaction,stateDeleteCart ,updateQty,dataCart, getCartData, stateAddCart}) => {
 
     const [mapData, setMapData] = useState({
         subtotal : null,
@@ -36,7 +36,7 @@ const Cart = ({stateDeleteCart ,updateQty,dataCart, getCartData, stateAddCart}) 
     useEffect(() => {
         let token = localStorage.getItem('token')
         getCartData(token)
-    },[updateQty.data, stateDeleteCart.data, stateAddCart.data])
+    },[updateQty.data, stateDeleteCart.data, stateAddCart.data, stateAddTransaction.data ])
 
     useEffect(() => {
         let weightTotal = 0
@@ -92,6 +92,8 @@ const Cart = ({stateDeleteCart ,updateQty,dataCart, getCartData, stateAddCart}) 
     // {"product_name" : "adidas", "product_price" : 20000, 
     // "qty" : 10,"variant_product_id" : 57, "url" : "AAAA"}
 
+    console.log(dataCart.data)
+
     const onSendBtnCheckOut = () => {
         let data = []
         dataCart.data.map((val) => {
@@ -108,13 +110,19 @@ const Cart = ({stateDeleteCart ,updateQty,dataCart, getCartData, stateAddCart}) 
         setLoading(true)
         Axios.post(ApiUrl + 'products/transaction/add-transaction',dataToInsert)
         .then((res) => {
-            console.log(res)
-            setLoading(false)
-            setIsModalOpen(true)
+            if(res.data.error){
+                addTransactionGagal(res.data.message)
+            }else{
+                console.log(res)
+                setLoading(false)
+                setIsModalOpen(true)
+                addTransactionSuccess(res.data.message)
+            }
         })
         .catch((err) => {
             console.log(err)
             setLoading(false)
+            addTransactionGagal(err.message)
         })
     }
 
@@ -229,12 +237,15 @@ const mapStateToProps = (state) => {
         dataCart : state.cart,
         updateQty : state.updateQty,
         stateDeleteCart : state.deleteCart,
-        stateAddCart : state.addCart
+        stateAddCart : state.addCart,
+        stateAddTransaction : state.addTransaction
     }
 }
 
 const mapDispatchToProps = {
-    getCartData
+    getCartData,
+    addTransactionSuccess,
+    addTransactionGagal
 }
 
 export default connect(mapStateToProps, mapDispatchToProps) (Cart)

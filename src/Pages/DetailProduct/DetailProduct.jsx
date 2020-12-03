@@ -16,7 +16,7 @@ import { connect } from 'react-redux'
 import ModalCheckout from './DetailProductComponent/ModalToCart'
 import { css } from "@emotion/core";
 import BeatLoader from "react-spinners/BeatLoader";
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 
 const override = css`
   display: block;
@@ -44,9 +44,12 @@ const DetailProduct = (props) => {
     const [modalOpen, setModalOpen] = useState(false)
     const [loading, setLoading] = useState(false)
 
+    const [dataSimilar, setDataSimilar] = useState(null)
+
     useEffect(() => {
         getDetailData()
-    }, [])
+        getSimilarProduct()
+    }, [props.match.params.id])
 
     
     const settings = {
@@ -83,27 +86,43 @@ const DetailProduct = (props) => {
             variant_product_id : size.variant_product_id,
             qty : 1
         }
-        if(data.token && data.variant_product_id !== 0){
-            setLoading(true)
-            Axios.post(ApiUrl + 'products/cart/add-to-cart', data)
-            .then((res) => {
-                if(res.data.error){
-                    props.addCartGagal(res.data.message)
+        if(!data.token){
+            props.history.push('/register')
+        }else{
+            if(data.token && data.variant_product_id !== 0){
+                setLoading(true)
+                Axios.post(ApiUrl + 'products/cart/add-to-cart', data)
+                .then((res) => {
+                    if(res.data.error){
+                        props.addCartGagal(res.data.message)
+                        setLoading(false)
+                    }else{
+                        setModalOpen(true)
+                        props.addCartSucces(res.data.message)
+                        setLoading(false)
+                    }
+                })
+                .catch((err) => {
+                    console.log(err)
                     setLoading(false)
-                }else{
-                    setModalOpen(true)
-                    props.addCartSucces(res.data.message)
-                    setLoading(false)
-                }
-            })
-            .catch((err) => {
-                console.log(err)
-                setLoading(false)
-            })
+                })
+            }
         }
     }
 
-    console.log(dataApi)
+    const getSimilarProduct = () => {
+        let id = props.match.params.id
+
+        Axios.get(ApiUrl + 'products/similar-product/' + id)
+        .then((res) => {
+            if(res.data.similarProductData.length !== 0){
+                setDataSimilar(res.data.similarProductData)
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
     
     return (
         <div className='container' style={{paddingTop : 120}}>
@@ -195,18 +214,18 @@ const DetailProduct = (props) => {
                                 dataApi.productInfo && dataApi.size && dataApi.productInfo.discount === 0 ?
                                 <p 
                                 style={{fontSize : 18}}>
-                                    Rp. {size.uk === 'Pick a Size' ? dataApi.size[0].price : size.price }
+                                    Rp. {size.uk === 'Pick a Size' ? (dataApi.size[0].price).toLocaleString('id-ID'): size.price.toLocaleString('id-ID') }
                                 </p>
                                 :
                                 <span>
-                                    <p style={{fontSize : 18}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && dataApi.size[0].price.toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
+                                    <p style={{fontSize : 18}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (dataApi.size[0].price).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
                                     <p style={{fontSize : 18}}>
                                         Now Rp.
                                         {
                                             size.uk === 'Pick a Size' ? 
-                                            dataApi.size && dataApi.productInfo && dataApi.size[0].price - (dataApi.size[0].price * (dataApi.productInfo.discount /100)).toLocaleString('id-ID')  
+                                            dataApi.size && dataApi.productInfo && (dataApi.size[0].price - (dataApi.size[0].price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID')  
                                             : 
-                                            dataApi.productInfo && size.price - (size.price * (dataApi.productInfo.discount /100)).toLocaleString('id-ID') 
+                                            dataApi.productInfo && (size.price - (size.price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID') 
                                         }
                                     </p>
                                 </span>
@@ -265,15 +284,53 @@ const DetailProduct = (props) => {
                         </div>
                     </div>
                        
-                    
                     <div style={{marginTop : 10}}>
                         <p style={{fontSize : 12}}>Shipping rate information</p>
 
                     </div>
+                </div>
+                
+            </div>
+            <div className='pt-3'>
+                <p style={{fontSize : 20, fontWeight : 800, marginBottom : 30}}>Similar Product</p>
+                <div className='row'>
+                    {
+                        dataSimilar && dataSimilar.map((val, i) => {
+                            return(
+                                <div className='col-6 col-md-3 '>
+                                    <div className='border p-2 my-2' >
+                                        <img
+                                        style={{maxWidth : '100%'}}
+                                        src={ApiUrl + 'public/product/' + val.url} />   
+
+                                        <div style={{marginTop : 10}}>
+                                            <Link to={'/detail-product/' + val.id} >
+                                                <p style={{fontSize : 14}}>{val.name}</p>
+                                            </Link>
+                                            <p style={{fontWeight : 800}}>{val.brands_name}</p>
+                                            {
+                                                val.discount !== 0 ?
+                                                <span>
+                                                    <p><s> Rp. {(parseInt(val.price)).toLocaleString('id-ID')}</s></p>
+                                                    <p>Rp : {(val.price - (val.price * (val.discount / 100))).toLocaleString('id-ID')}</p>
+                                                </span>
+                                                :
+                                                <span>
+                                                    <p>Rp. {(parseInt(val.price)).toLocaleString('id-ID')}</p>
+                                                    <p style={{visibility : 'hidden'}}>Batas</p>
+                                                </span>
+
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            )
+                        })
+                    }
+                    
                     
 
                 </div>
-                
             </div>
         </div>
     )

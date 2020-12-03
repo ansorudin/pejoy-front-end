@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react'
 import CardProduct from '../../Component/CardProduct'
 import './CardProduct.css'
 import './SortProduct.css'
+import './ListProduct.css'
 import { Collapse, Dropdown, DropdownMenu, DropdownToggle } from 'reactstrap';
 import Axios from 'axios'
 import { ApiUrl } from '../../Constant/ApiUrl'
 import { getQuery } from '../../Support/Functions/getSeacrh'
 import ReactPaginate from 'react-paginate';
-import { set } from 'js-cookie'
 
 
 const ratingStar = [
@@ -38,6 +38,7 @@ const ListProduct = (props) => {
         price : [],
         brands : [],
         discount : ''
+
     })
     const [priceToInput, setPriceToInput] = useState({
         price1 : '',
@@ -50,30 +51,52 @@ const ListProduct = (props) => {
         currentPage : 0,
         pageCount : 0
     })
-    const [isiDropDown, setIsiDropDown] = useState('DEFAULT')
+    const [isiDropDown, setIsiDropDown] = useState("DEFAULT")
+    const [searchBox, setSearchBox] = useState([])
 
     
     useEffect(() => {
-        getAllProduct()
         getFilter()
     },[])
 
     useEffect(() => {
-        getProductByFilter()
+        if(searchBox.category || searchBox.brands){
+            getAllProduct()
+        }
+    }, [searchBox, isiDropDown])
+    
+    useEffect(() => {
+        let query = getQuery(props.location.search)
+        setSearchBox(query)
+    },[props.location.search])
+
+    // console.log(inputCategory)
+  
+
+    useEffect(() => {
+        if(!searchBox.category || !searchBox.brands){
+            getProductByFilter()
+        }
     },[isiDropDown])
 
-   
     const onHandleCheckCategory = (e) => {
+        setSearchBox([])
+        inputCategory.category.forEach((val,i) => {
+            if(val === e.target.value){
+                inputCategory.category.splice(i, 1)
+            }
+        })
         if(e.target.checked === true){
             inputCategory.category.push(e.target.value)
+            
         }else{
             inputCategory.category = inputCategory.category.filter(a => a !== e.target.value)
-            
         }
         getProductByFilter()
     }
 
     const onHandleCheckRating = (e) => {
+        setSearchBox([])
         if(e.target.checked === true){
             inputCategory.rating.push(e.target.value)
         }else{
@@ -82,20 +105,22 @@ const ListProduct = (props) => {
         getProductByFilter()
     }
     const onHandleCheckBrands = (e) => {
+        setSearchBox([])
         if(e.target.checked === true){
             inputCategory.brands.push(e.target.value)
         }else{
             inputCategory.brands = inputCategory.brands.filter(a => a !== e.target.value)
         }
-        
         getProductByFilter()
     }
     const onHandleCheckDiscount = (e) => {
+        setSearchBox([])
         inputCategory.discount = e.target.value
         getProductByFilter()
     }
 
     const onHandlePrice = () => {
+        setSearchBox([])
         // if(priceToInput.price1 !== '' && priceToInput.price2 !== '' ){
         // }
         setInputCategory({...inputCategory,price : [priceToInput.price1, priceToInput.price2]})
@@ -103,36 +128,28 @@ const ListProduct = (props) => {
     }
 
     const onChangeSort = (e) =>{
-        
         setIsiDropDown(e.target.value)
-        console.log(e.target.value)
-        
     }
-    console.log(isiDropDown)
-    
-    
-   
-    
-    const getAllProduct = () => {
-        let query = getQuery(props.location.search)
-        Axios.post(ApiUrl + `products/filter/category`, query)
-        .then((res) => {
-            try {
-                if(res.data.error) throw new Error
-                setData(res.data.filterCategory)
-                let data = res.data.filterCategory
-                let slice = data.slice(pagin.offset, pagin.offset + pagin.perPage )
-                setPagin(
-                    {...pagin, pageCount: Math.ceil(data.length / pagin.perPage), dataSlice : slice}
-                )
-            } catch (error) {
-                console.log(error)
-            }
-        })
-        .catch((err) => {
-            console.log(err)
-        })
 
+    const getAllProduct = () => {
+
+            Axios.post(ApiUrl + `products/filter/category?sort=${isiDropDown}`, searchBox)
+            .then((res) => {
+                try {
+                    if(res.data.error) throw new Error
+                    setData(res.data.filterCategory)
+                    let data = res.data.filterCategory
+                    let slice = data.slice(pagin.offset, pagin.offset + pagin.perPage )
+                    setPagin(
+                        {...pagin, pageCount: Math.ceil(data.length / pagin.perPage), dataSlice : slice}
+                    )
+                } catch (error) {
+                    console.log(error)
+                }
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
 
     const getFilter = () => {
@@ -188,18 +205,16 @@ const ListProduct = (props) => {
         
     }
 
-    
-    
-    
     return (
-        <div className='container' style={{paddingTop : 120, paddingBottom : 120}}>
-            <div style={{display : 'flex', justifyContent : 'center', alignItems : 'center', marginBottom : 60}}>
+        <div className='container container-list-product'>
+            <div className='container-banner'>
                 <img 
+                className='image-banner'
                 style={{width : '100%', height : 250, objectFit : 'cover'}}
                 src='https://images.unsplash.com/photo-1513617332477-a365e97b52a7?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1951&q=80' />
             </div>
             
-            <div className='border-bottom border-top pt-3 pb-3 row' style={{display : 'flex', marginBottom : 20, alignItems : 'center'}}>
+            <div className='border-bottom border-top pt-3 pb-3 row d-flex mb-4 align-items-center'>
                 <div className='col-md-3' style={{paddingRight : 30}}>
                     <div style={{display : 'flex', alignItems : 'center', justifyContent : 'space-between'}}>
                         <p style={{fontSize : 20}}>Filter</p>
@@ -223,7 +238,7 @@ const ListProduct = (props) => {
                 </div>
             </div>
             <div className='row'>
-                <div className='col-md-3' style={{paddingRight : 30, paddingTop : 5, width : 270, }}>
+                <div className='col-12 col-md-3' style={{paddingRight : 30, paddingTop : 5, width : 270, }}>
                     
                     <div>
                         <div onClick={() => setIsOpen({...isOpen, child_1 : !isOpen.child_1})} style={{display : 'flex',  alignItems : 'center', justifyContent : 'space-between'}} >
@@ -237,6 +252,7 @@ const ListProduct = (props) => {
                                     return(
                                         <span style={{display : 'flex', alignItems : 'center', padding : 3}}>
                                             <input 
+                                            
                                             type="checkbox" 
                                             onClick={(e) => onHandleCheckCategory(e)}
                                             style={{width : 16, height : 16}}
