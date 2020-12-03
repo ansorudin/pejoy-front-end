@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { io } from './../../Support/Constants/Socket';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapMarkerAlt, faEnvelopeOpenText, faTimes, faPaperPlane } from '@fortawesome/free-solid-svg-icons';
@@ -19,9 +20,9 @@ export class Footer extends React.Component {
     }
 
     componentDidMount(){
-        this.props.io.on('send-message', (data) => {
+        io.on('send-message', (data) => {
             console.log(data)
-            this.setState({message: [...this.state.message, ...data], typingMessage : false})
+            this.setState({message: [...this.state.message, ...data]})
         })
     }
 
@@ -34,21 +35,24 @@ export class Footer extends React.Component {
     }
 
     onStartChat = () => {
-        let email = this.email.value
         let room = 'customer_' + this.email.value
+        let email = this.email.value
 
-        this.props.io.emit('user-join', {email, room})
+        io.emit('user-start-chat', {email, room})
         this.setState({email: email, room: room})
     }
 
     onSendButtonClick = () => {
         var data = {
             username : this.state.email,
-            message : this.message.value
+            message : this.message.value,
+            user_role: this.props.user.data.data[0].user_role
         }
 
-        this.props.io.emit('send-message', data)
-        this.message.value = ''
+        if(this.message.value.length !== 0){
+            io.emit('send-message', data)
+            this.message.value = ''
+        }
     }
 
     renderMessage = () => {
@@ -61,8 +65,8 @@ export class Footer extends React.Component {
                                 <div className="col-2 align-self-end">
                                     <img src={AdminIcon} width="100%" />
                                 </div>
-                                <div className="col-10 text-right" style={{marginLeft: -20}}>
-                                    <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-main-light pa-light pa-font-size-12" style={{display : 'inline-block', borderRadius : '15px 15px 15px 3px'}}>
+                                <div className="col-10 text-left" style={{marginLeft: -20}}>
+                                    <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-main-light pa-light pa-font-size-15" style={{display : 'inline-block', borderRadius : '15px 15px 15px 3px'}}>
                                         {value.message}
                                     </div>
                                 </div>
@@ -71,20 +75,32 @@ export class Footer extends React.Component {
                             value.myMessage === true?
                                 <div className="row justify-content-end px-3 py-1">
                                     <div className="col-12 text-right">
-                                        <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-light-grey pa-font-size-12" style={{display : 'inline-block', borderRadius : '15px 15px 3px 15px'}}>
+                                        <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-light-grey pa-font-size-15" style={{display : 'inline-block', borderRadius : '15px 15px 3px 15px'}}>
                                             {value.message}
                                         </div>
                                     </div>
                                 </div>
                             :
-                                <div className="row justify-content-end px-3 py-1">
-                                    <div className="col-12 text-right">
-                                        <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-light-grey pa-font-size-12" style={{display : 'inline-block', borderRadius : '15px 15px 3px 15px'}}>
-                                            {value.message}
+                                value.user_role === 0?
+                                    <div className="row justify-content-end px-3 py-1">
+                                        <div className="col-12 text-right">
+                                            <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-light-grey pa-font-size-15" style={{display : 'inline-block', borderRadius : '15px 15px 3px 15px'}}>
+                                                {value.message}
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                    }
+                                :
+                                    <div className="row justify-content-start px-0 py-1">
+                                        <div className="col-2 align-self-end">
+                                            <img src={AdminIcon} width="100%" />
+                                        </div>
+                                        <div className="col-10 text-left" style={{marginLeft: -20}}>
+                                            <div className="mx-0 my-1 px-3 py-1 text-left rounded-top-left pa-bg-main-light pa-light pa-font-size-15" style={{display : 'inline-block', borderRadius : '15px 15px 15px 3px'}}>
+                                                {value.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                    }   
                 </div>
             )
         })
@@ -94,7 +110,15 @@ export class Footer extends React.Component {
         return(
             <div>
                 {/* FOOTER SECTION */}
-                <img src={CustomerCareIcon} onClick={() => this.openChatRoom()} className="d-none d-md-block chat-icon" />
+                {
+                    this.props.user.data === null? 
+                        null 
+                    : 
+                        this.props.user.data.data[0].user_role === 0?
+                            <img src={CustomerCareIcon} onClick={() => this.openChatRoom()} className="d-none d-md-block chat-icon" />
+                        :
+                            null
+                }
 
                 <div ref="chatRoom" className="chat-popup">
                     <div className="row justify-content-between mx-0 my-0 px-3 py-3 pa-bg-main-light" style={{borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
@@ -117,7 +141,7 @@ export class Footer extends React.Component {
                                             <input type="text" ref={(element) => this.message = element} className="form-control rounded-0 border-left-0 border-right-0 border-top-0 border-bottom border-primary pa-input" placeholder="Type something..." />
                                         </div>
                                         <div>
-                                            <button onClick={this.onSendButtonClick} className="btn w-100 h-100 px-3 rounded-0 pa-bg-main-light pa-light">Send</button>
+                                            <button onClick={this.onSendButtonClick} className="btn w-100 h-100 px-3 rounded-0 pa-input pa-bg-main-light pa-light">Send</button>
                                         </div>
                                     </div>
                                 </div>

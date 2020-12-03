@@ -32,3 +32,10 @@
     border-radius: 5px;
     z-index: 1;
 }
+
+.pa-chat-room {
+    height: 300px;
+    overflow: auto;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}

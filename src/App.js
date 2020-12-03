@@ -43,8 +43,8 @@ const App = () => {
             <Route path='/cart' component={Cart}/>
             <Route path='/verification' component={Verification}/>
             <Route path='/resetpassword/:token' component={ResetPass}/>
-
           </Switch>
+        <Footer />
 
      
       </BrowserRouter>

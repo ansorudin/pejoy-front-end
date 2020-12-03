@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import Skeleton from 'react-loading-skeleton';
 
 import { onGetDataStatistic } from './../../../Redux/Actions/UserProfile/dataStatisticAction';
 
@@ -15,9 +16,27 @@ export class Statistic extends Component{
     render(){
         if(this.props.dataStatistic.data === null){
             return(
-                <div>
-                    Loading
-                </div>
+                <>
+                    <div className="font-weight-bold pa-font-size-18">
+                        <Skeleton width={250} height={15} duration={1} />
+                    </div>
+                    <div className="mx-0 my-1 border-bottom">
+
+                    </div>
+                    <div className="mx-0 mt-3 mb-0 px-5 py-3" style={{border: "1px solid #0095da", borderRadius: 5}}>
+                        <div className="row justify-content-between align-items-center">
+                            <div className="font-weight-bold pa-font-size-18">
+                                <Skeleton width={250} height={15} duration={1} />
+                                <p className="font-weight-light pa-font-size-30 pa-dark-grey">
+                                    <Skeleton width={350} height={15} duration={1} />
+                                </p>
+                            </div>
+                            <div>
+                                <Skeleton width={100} height={50} duration={1} />
+                            </div>
+                        </div>
+                    </div>
+                </>
             )
         }
 
