@@ -10,6 +10,7 @@ import Axios from 'axios'
 import { ApiUrl } from '../../Constant/ApiUrl'
 import { getQuery } from '../../Support/Functions/getSeacrh'
 import ReactPaginate from 'react-paginate';
+import SkeletonLoadingListProduct from './ComponentListProduct/SkeletonLoadingListProduct'
 
 
 const ratingStar = [
@@ -400,7 +401,8 @@ const ListProduct = (props) => {
                     :
                     <div className='col-md-9 row'>
                         {
-                            pagin.dataSlice && pagin.dataSlice.map((val, i) => {
+                            pagin.dataSlice ? 
+                            pagin.dataSlice.map((val, i) => {
                                 return(
                                     <CardProduct 
                                     name={val.name} 
@@ -415,6 +417,8 @@ const ListProduct = (props) => {
                                     />
                                 )
                             })
+                            :
+                            <SkeletonLoadingListProduct />
                         }
                         <div className='w-100' style={{display : 'flex', justifyContent : 'center', alignItems : 'center'}}>
                             <ReactPaginate

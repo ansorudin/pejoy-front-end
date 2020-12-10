@@ -34,8 +34,8 @@ export class AddShippingAddress extends Component{
             phone_number: '',
             receiver_name: '',
             users_id: 1,
-            longitude: '',
-            latitude: '',
+            longUser: '',
+            latUser: '',
             is_main_address: 0,
             province_id: '',
             city_id: '',
@@ -72,7 +72,7 @@ export class AddShippingAddress extends Component{
             // Update Center State Of Maps
             this.setState({ mapCenter: latLng });
             
-            this.setState({data: {...this.state.data, longitude: latLng.lng, latitude: latLng.lat}})
+            this.setState({data: {...this.state.data, longUser: latLng.lng, latUser: latLng.lat}})
           })
           .catch(error => console.error('Error', error));
       }
@@ -88,7 +88,8 @@ export class AddShippingAddress extends Component{
       }
 
       saveShippingAddress = async () => {
-        if(!this.state.data.receiver_name || !this.state.data.phone_number || !this.state.data.address_detail || !this.state.data.city || !this.state.data.longitude || !this.state.data.latitude){
+          console.log(this.state.data)
+        if(!this.state.data.receiver_name || !this.state.data.phone_number || !this.state.data.address_detail || !this.state.data.city || !this.state.data.longUser || !this.state.data.latUser){
             this.setState({errorInput: 'Please Fill Your Valid Data'})
         }
         else{
@@ -336,4 +337,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = { onSaveShippingAddress, onGetProvinceIdRajaOngkir, onGetCityIdRajaOngkir }
 
-export default GoogleApiWrapper({ apiKey: ('AIzaSyABdJX4vpQfi81cvzXoSz59pIYPaiMOQk0') })(connect(mapStateToProps, mapDispatchToProps)(AddShippingAddress))
+export default GoogleApiWrapper({ apiKey: ('AIzaSyDRibTto-9-y2x18URkKqx3JruKW1Y7wE8') })(connect(mapStateToProps, mapDispatchToProps)(AddShippingAddress))

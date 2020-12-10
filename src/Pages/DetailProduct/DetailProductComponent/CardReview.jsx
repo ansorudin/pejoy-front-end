@@ -38,10 +38,10 @@ const CardReview = ({rating, review, onClick}) => {
                 </div>
             </div>
             <div className='col-md-6' style={{padding : 14}}>
-                <div className='border pl-3 pr-3 pt-2 pb-2' style={{ height : 300 ,display : 'flex', flexDirection : 'column', justifyContent : 'space-between'}}>
+                <div className='border pl-3 pr-3 pt-2 pb-2' style={{ height : 300 ,width : '100%',display : 'flex', flexDirection : 'column', justifyContent : 'space-between', flexWrap : 'wrap'}}>
                     {
                         review ?
-                        <h2 style={{fontWeight : 'bolder', letterSpacing : 1 }}>"{review[0].review}"</h2>
+                        <h2 style={{fontWeight : 'bolder', letterSpacing : 1, }}>"{review[0].review}"</h2>
                         :
                         <h2 style={{fontWeight : 'bolder', letterSpacing : 1, visibility : 'hidden'}}>""</h2>
                     }

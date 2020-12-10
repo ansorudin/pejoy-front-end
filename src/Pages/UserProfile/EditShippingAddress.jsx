@@ -37,8 +37,8 @@ export class EditShippingAddress extends Component{
             phone_number: '',
             receiver_name: '',
             users_id: 1,
-            longitude: '',
-            latitude: '',
+            longUser: '',
+            latUser: '',
             is_main_address: 0,
             province_id: '',
             city_id: '',
@@ -67,15 +67,15 @@ export class EditShippingAddress extends Component{
                 phone_number: res.data.data[0].phone_number,
                 receiver_name: res.data.data[0].receiver_name,
                 users_id: 1,
-                longitude: res.data.data[0].longitude,
-                latitude: res.data.data[0].latitude,
+                longUser: res.data.data[0].longUser,
+                latUser: res.data.data[0].latUser,
                 is_main_address: res.data.data[0].is_main_address,
                 province_id: res.data.data[0].province_id,
                 city_id: res.data.data[0].city_id, 
                 nearest_place: res.data.data[0].nearest_place
             }})
 
-            this.setState({mapCenter: {lat: res.data.data[0].latitude, lng: res.data.data[0].longitude}})
+            this.setState({mapCenter: {lat: res.data.data[0].latUser, lng: res.data.data[0].longUser}})
 
             this.setState({address: res.data.data[0].nearest_place})
         })
@@ -102,7 +102,7 @@ export class EditShippingAddress extends Component{
             // Update Center State Of Maps
             this.setState({ mapCenter: latLng });
             
-            this.setState({data: {...this.state.data, longitude: latLng.lng, latitude: latLng.lat}})
+            this.setState({data: {...this.state.data, longUser: latLng.lng, latUser: latLng.lat}})
           })
           .catch(error => console.error('Error', error));
         }
@@ -364,4 +364,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = { onUpdateShippingAddress, onGetProvinceIdRajaOngkir, onGetCityIdRajaOngkir }
 
-export default GoogleApiWrapper({ apiKey: ('AIzaSyABdJX4vpQfi81cvzXoSz59pIYPaiMOQk0') })(connect(mapStateToProps, mapDispatchToProps)(EditShippingAddress))
+export default GoogleApiWrapper({ apiKey: ('AIzaSyDRibTto-9-y2x18URkKqx3JruKW1Y7wE8') })(connect(mapStateToProps, mapDispatchToProps)(EditShippingAddress))

@@ -1,4 +1,4 @@
-.ver-container{
+/* .ver-container{
     width: 100%;
     height: 100vh;
     display: flex;
@@ -30,10 +30,10 @@
 
   .prev a{
       text-decoration: none;
-  }
+  } */
   
   /* Position the "next button" to the right */
-  .next {
+  /* .next {
     right: 460px;
     border-radius: 3px 0 0 3px;
   }
@@ -57,9 +57,9 @@
 
   .active{
     background-color: #717171
-  }
+  } */
   /* On hover, add a black background color with a little bit see-through */
-  .prev:hover, .next:hover {
+  /* .prev:hover, .next:hover {
     background-color:#c6fced;
     opacity: .5;
   
@@ -67,7 +67,7 @@
   }
   .displaynone{
       display: none;
-  }
+  } */
 
 
 

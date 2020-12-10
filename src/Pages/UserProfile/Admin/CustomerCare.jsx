@@ -23,6 +23,8 @@ export class CustomerCare extends Component{
             this.setState({message: [...this.state.message, ...data]})
             if(data[0].offline === true){
                 window.location = '/member/admin-dashboard/customer-care'
+            }else{
+                
             }
         })
         io.on('open-room', () => {

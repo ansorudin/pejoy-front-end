@@ -20,6 +20,8 @@ import Registration from './Pages/Registration/Registration/Registration'
 import Cart from './Pages/Cart/Cart'
 import Verification from './Pages/Registration/Registration/Screens/verification/verficication'
 import ResetPass from './Pages/Registration/Registration/Screens/Reset/ResetPass'
+import SkeletonLoadingListProduct from './Pages/ListProduct/ComponentListProduct/SkeletonLoadingListProduct';
+import SkeletonDetailProduct from './Pages/DetailProduct/DetailProductComponent/SkeletonDetailProduct';
 
 
 
@@ -38,7 +40,7 @@ const App = () => {
             <Route path='/checkout-form' component={CheckoutForm} />
             <Route path='/my-struck' component={MyStruck} />
             <Route path='/member' component={UserProfile} />
-            <Route path='/test' component={CardSimilarProduct} />
+            <Route path='/test' component={SkeletonDetailProduct} />
             <Route path='/register' component={Registration}/>
             <Route path='/cart' component={Cart}/>
             <Route path='/verification' component={Verification}/>

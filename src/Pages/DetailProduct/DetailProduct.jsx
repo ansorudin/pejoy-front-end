@@ -48,6 +48,8 @@ const DetailProduct = (props) => {
 
     const [dataSimilar, setDataSimilar] = useState(null)
 
+    const [dataGudangStock, setDataGudangStock] = useState(null)
+
     useEffect(() => {
         getDetailData()
         getSimilarProduct()
@@ -61,6 +63,8 @@ const DetailProduct = (props) => {
         slidesToShow: 3,
         slidesToScroll: 1
     };
+
+    console.log(size.stock)
 
     const getDetailData = () => {
         let id = props.match.params.id
@@ -125,10 +129,24 @@ const DetailProduct = (props) => {
             console.log(err)
         })
     }
+
+    const getStockGudang = () => {
+        let id = size.variant_product_id
+
+        if(size.variant_product_id){
+            Axios.get(ApiUrl + 'products/stock/stock-setiap-gudang/' + id)
+            .then((res) => {
+                setDataGudangStock(res.data.dataStock)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+    }
     
     return (
         <div className='container' style={{paddingTop : 120}}>
-            <ModalAddReview openModal={openModalReview} product_id={props.match.params.id} url={dataApi.image && dataApi.image[0].url} />
+            <ModalAddReview openModal={openModalReview} products_id={props.match.params.id} url={dataApi.image && dataApi.image[0].url} />
             <ModalCheckout 
             isOpen={modalOpen}
             imageModal={dataApi.image && dataApi.image[0].url}
@@ -164,7 +182,7 @@ const DetailProduct = (props) => {
                         }
                         {
                             review ?
-                            <CardReview onClick={() => setOpenModalReview(!openModalReview)} review={review} rating={dataApi.avgRating && dataApi.avgRating} />
+                            <CardReview onClick={() => setOpenModalReview(true)} review={review} rating={dataApi.avgRating && dataApi.avgRating} />
                             :
                             <div onClick={() => setOpenModalReview(!openModalReview)} className="border pr-5 pl-5 pt-2 pb-2 mt-3 mb-3" style={{display : 'inline-block'}}>
                                 <p>Add your Review</p>
@@ -290,6 +308,20 @@ const DetailProduct = (props) => {
                     <div style={{marginTop : 10}}>
                         <p style={{fontSize : 12}}>Shipping rate information</p>
 
+                    </div>
+
+                    <div style={{marginTop : 20}}>
+                        <div onClick={getStockGudang}>See Stock gudang</div>
+                        <span>
+                            {
+                                dataGudangStock && dataGudangStock.map((val) => {
+                                    return(
+                                        <p>Stock gudang {val.city_gudang}  : {val.stock_customer}</p>
+                                    )
+
+                                })
+                            }
+                        </span>
                     </div>
                 </div>
                 

@@ -16,13 +16,14 @@ const ModalAddReview = (props) => {
         className,
         products_id,
         url,
-        openModal
+        openModal,
+        isi
       } = props;
 
       const [hasilStar, setHasilStar] = useState(0)
       const [hasilReview, setHasilReview] = useState('')
     
-      const [modal, setModal] = useState(true);
+      const [modal, setModal] = useState(openModal);
       const toggle = () => setModal(!modal);
 
 
@@ -35,7 +36,9 @@ const ModalAddReview = (props) => {
               rating : hasilStar,
               products_id : products_id
           }
-          if(!data.token && !data.review && !data.rating && !data.products_id){
+          console.log(data)
+          if(data.token && data.review && data.rating && data.products_id){
+              
               Axios.post(ApiUrl + 'products/review/add-review', data )
               .then((res) => {
                   if(res.data.error){
@@ -45,20 +48,28 @@ const ModalAddReview = (props) => {
                         text: 'Something went wrong!',
                         footer: '<a href>Why do I have this issue?</a>'
                       })
+                      setModal(false)
                       
                   }else{
                     Swal.fire({
-                        position: 'top-end',
+                        position: 'center',
                         icon: 'success',
                         title: 'Add review Succes',
                         showConfirmButton: false,
                         timer: 1500
                       })
-
+                      setModal(false)
                   }
               })
               .catch((err) => {
                   console.log(err)
+              })
+          }else{
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong!',
+                footer: '<a href>Why do I have this issue?</a>'
               })
           }
       }
@@ -67,7 +78,8 @@ const ModalAddReview = (props) => {
 
     return (
         <div>
-            <Modal centered isOpen={openModal} className={className}>
+            
+            <Modal  centered isOpen={modal} className={className}>
                 <ModalBody>
                     <div style={{display : 'flex', alignItems : 'center'}}>
                         <img 
@@ -95,7 +107,7 @@ const ModalAddReview = (props) => {
                 </ModalBody>
                 <ModalFooter>
                 <Button color="primary" onClick={onButtonSubmit}>Create Review</Button>
-                <Button color="secondary" >Cancel</Button>
+                <Button color="secondary" onClick={() => setModal(false)} >Cancel</Button>
                 </ModalFooter>
             </Modal>
         </div>

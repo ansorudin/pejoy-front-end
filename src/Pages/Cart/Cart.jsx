@@ -36,7 +36,7 @@ const Cart = ({stateAddTransaction,stateDeleteCart ,updateQty,dataCart, getCartD
     useEffect(() => {
         let token = localStorage.getItem('token')
         getCartData(token)
-    },[updateQty.data, stateDeleteCart.data, stateAddCart.data, stateAddTransaction.data ])
+    },[updateQty.data, stateDeleteCart.data, stateAddCart.data])
 
     useEffect(() => {
         let weightTotal = 0

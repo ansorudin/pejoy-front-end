@@ -30,7 +30,7 @@ export class Transactions extends Component{
 
         const data = {
             token,
-            status_name_id: 2
+            status_name_id: 1
         }
 
         this.props.getMyTransactions(data)
