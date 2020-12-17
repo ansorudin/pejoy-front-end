@@ -104,7 +104,10 @@ export class Statistic extends Component{
                                 Income
                                 <p className="font-weight-light pa-font-size-30 pa-dark-grey">
                                     Rp.{
-                                        (this.props.dataStatistic.data.getIncomePending[0].total_income_pending).toLocaleString('Id-ID')
+                                        this.props.dataStatistic.data.getIncomePending[0].total_income_pending?
+                                            (this.props.dataStatistic.data.getIncomePending[0].total_income_pending).toLocaleString('Id-ID')
+                                        :
+                                            null
                                     }
                                     <span className="px-2 py-0 font-weight-light pa-font-size-30 pa-dark-grey">
                                         Pending

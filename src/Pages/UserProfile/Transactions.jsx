@@ -7,7 +7,7 @@ import Skeleton from 'react-loading-skeleton';
 import { getMyTransactions, confirmMyTransaction } from './../../Redux/Actions/UserProfile/myTransactionsAction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronCircleDown } from '@fortawesome/free-solid-svg-icons';
+import { faChevronCircleDown, faCreditCard, faCheckCircle, faCube, faTruck } from '@fortawesome/free-solid-svg-icons';
 
 import './UserProfile.css';
 
@@ -96,7 +96,7 @@ export class Transactions extends Component{
                 token,
                 transaction_id,
                 status_name_id: 4,
-                is_done: 1
+                is_done: 0
             }
 
             this.props.confirmMyTransaction(data)
@@ -127,7 +127,7 @@ export class Transactions extends Component{
                                     Status :
                                 </p>
                                 <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                    Transaction {value.status}
+                                    {value.status}
                                 </p>
                             </div>
                         </div>
@@ -164,17 +164,6 @@ export class Transactions extends Component{
                                         </div>
                                         <div className="mt-3 mb-3 border-bottom">
 
-                                        </div>
-                                    </>
-                                )
-                            })
-                        }
-                        {
-                            this.props.myTransactions.data.dataHistoryTransactionsUsers.map((value, index) => {
-                                return(
-                                    <>
-                                        <div>
-                                            {value.transaction_date}
                                         </div>
                                     </>
                                 )
@@ -222,7 +211,7 @@ export class Transactions extends Component{
                                     Status :
                                 </p>
                                 <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                    Transaction {value.status}
+                                    {value.status}
                                 </p>
                             </div>
                             <div className="col-4 border-left text-right">
@@ -277,44 +266,6 @@ export class Transactions extends Component{
                                 )
                             })
                         }
-                        <div className="row justify-content-between px-3 pt-0 pb-2">
-                            <div className="font-weight-bold pa-dark">
-                                Status Transactions
-                            </div>
-                            <div>
-                                <FontAwesomeIcon onClick={() => this.setState({seeStatusTransactions: !this.state.seeStatusTransactions})} icon={faChevronCircleDown} className="fa-md pa-clickable-element pa-light-grey" />
-                            </div>
-                        </div>
-                        {
-                            this.state.seeStatusTransactions?
-                                this.props.myTransactions.data.dataHistoryTransactionsUsers.map((value, index) => {
-                                    return(
-                                        <>
-                                            <div className="row align-items-center px-3 py-2">
-                                                <div>
-                                                    {
-                                                        value.status_name === 'Completed'?
-                                                            <div className="px-3 py-0 pa-bg-main-light pa-font-size-12 pa-light" style={{borderRadius: 5}}>
-                                                                {moment(value.transaction_date).format('YYYY-MM-DD HH:mm:ss')}
-                                                            </div>
-                                                        :
-                                                            <div className="px-3 py-0 border border-primary pa-font-size-12" style={{borderRadius: 5}}>
-                                                                {moment(value.transaction_date).format('YYYY-MM-DD HH:mm:ss')}
-                                                            </div>
-                                                    }
-                                                </div>
-                                                <div className="mx-2 my-0 font-weight-normal pa-font-size-15">
-                                                    <div className="">
-                                                        This Transaction {value.status_name}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </>
-                                    )
-                                })
-                            :
-                                null
-                        }
                         <div className="text-center">
                             {
                                 value.detail_transaction.length > 1 && value.detail_transaction.length !== this.state.moreProducts?
@@ -324,6 +275,8 @@ export class Transactions extends Component{
                                 :
                                     null
                             }
+                        </div>
+                        <div className="text-center">
                             {
                                 value.detail_transaction.length > 1 && value.detail_transaction.length === this.state.moreProducts?
                                     <span onClick={() => this.setState({moreProducts: 1})} className="pa-clickable-element pa-font-size-12 pa-main-light">
@@ -332,6 +285,111 @@ export class Transactions extends Component{
                                 :
                                     null
                             }
+                        </div>
+                        <div className="row justify-content-between px-3 pt-0 pb-2">
+                            <div className="font-weight-bold pa-dark">
+                                Status Transactions
+                            </div>
+                            <div>
+                                <FontAwesomeIcon onClick={() => this.setState({seeStatusTransactions: !this.state.seeStatusTransactions})} icon={faChevronCircleDown} className="fa-md pa-clickable-element pa-light-grey" />
+                            </div>
+                        </div>
+                        <div className="row align-items-center px-0 py-2">
+                        {
+                            this.state.seeStatusTransactions?
+                                value.history_transaction.map((value1, index1) => {
+                                    return(
+                                        <>
+                                            {
+                                                value1.status_name !== 'Waiting For Payment'?
+                                                    <div className="col-1">
+                                                        <hr />
+                                                    </div>
+                                                :
+                                                    null
+                                            }
+                                            <div className="col-2">
+                                                <div className={value1.is_done === 0? "border border-primary" : "border" } style={{width: 40, height: 40, borderRadius: 100, marginLeft: 28}}>
+                                                    {
+                                                        value1.status_name === 'Waiting For Payment'?
+                                                            <FontAwesomeIcon icon={faCreditCard} className={value1.is_done === 0? "pa-font-size-18 pa-main-light" : "pa-font-size-18 pa-light-grey"} style={{marginLeft: 9, marginRight: 0, marginTop: 10, marginBottom: 0}} />
+                                                        :
+                                                            null
+                                                    }  
+                                                    {
+                                                        value1.status_name === 'Paid'?
+                                                            <FontAwesomeIcon icon={faCheckCircle} className={value1.is_done === 0? "pa-font-size-18 pa-main-light" : "pa-font-size-18 pa-light-grey"} style={{marginLeft: 10, marginRight: 0, marginTop: 10, marginBottom: 0}} />
+                                                        :
+                                                            null
+                                                    }
+                                                    {
+                                                        value1.status_name === 'Delivery'?
+                                                            <FontAwesomeIcon icon={faTruck} className={value1.is_done === 0? "pa-font-size-18 pa-main-light" : "pa-font-size-18 pa-light-grey"} style={{marginLeft: 8, marginRight: 0, marginTop: 10, marginBottom: 0}} />
+                                                        :
+                                                            null
+                                                    } 
+                                                    {
+                                                        value1.status_name === 'Completed'?
+                                                            <FontAwesomeIcon icon={faCube} className={value1.is_done === 0? "pa-font-size-18 pa-main-light" : "pa-font-size-18 pa-light-grey"} style={{marginLeft: 10, marginRight: 0, marginTop: 10, marginBottom: 0}} />
+                                                        :
+                                                            null
+                                                    }
+                                                </div>
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            :
+                                null
+                        }
+                        </div>
+                        <div className="row px-0 py-0">
+                        {
+                            this.state.seeStatusTransactions?
+                                value.history_transaction.map((value1, index1) => {
+                                    return(
+                                        <>
+                                            {
+                                                value1.status_name !== 'Waiting For Payment'?
+                                                    <div className="col-1">
+                                                        
+                                                    </div>
+                                                :
+                                                    null
+                                            }
+                                            <div className={value1.is_done === 0? "col-2 text-center font-weight-bold pa-font-size-12 pa-main-light" : "col-2 text-center pa-font-size-12 pa-light-grey" }>
+                                                {value1.status_name}
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            :
+                                null
+                        }
+                        </div>
+                        <div className="row px-0 py-0">
+                        {
+                            this.state.seeStatusTransactions?
+                                value.history_transaction.map((value1, index1) => {
+                                    return(
+                                        <>
+                                            {
+                                                value1.status_name !== 'Waiting For Payment'?
+                                                    <div className="col-1">
+                                                        
+                                                    </div>
+                                                :
+                                                    null
+                                            }
+                                            <div className={value1.is_done === 0? "col-2 text-center font-weight-bold pa-font-size-10 pa-main-light" : "col-2 text-center pa-font-size-10 pa-light-grey" }>
+                                                {moment(value1.transaction_date).format('YYYY-MM-DD HH:mm')}
+                                            </div>
+                                        </>
+                                    )
+                                })
+                            :
+                                null
+                        }
                         </div>
                     </div>
                 </>

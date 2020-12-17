@@ -11,8 +11,7 @@ import Navbar from './Component/Navbar/Navbar';
 import LandingPage from './Pages/LandingPage/LandingPage';
 import ListProduct from './Pages/ListProduct/ListProduct';
 import DetailProduct from './Pages/DetailProduct/DetailProduct';
-import CheckoutForm from './Pages/Checkout/CheckoutForm';
-import MyStruck from './Pages/Checkout/MyStruck';
+import Checkout from './Pages/Checkout/Checkout';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import Footer from './Component/Footer/Footer';
 import CardSimilarProduct from './Pages/DetailProduct/DetailProductComponent/CardSimilarProduct';
@@ -37,8 +36,7 @@ const App = () => {
             <Route exact path='/' component={LandingPage} />
             <Route path='/products' component={ListProduct} />
             <Route path='/detail-product/:id' component={DetailProduct} />
-            <Route path='/checkout-form' component={CheckoutForm} />
-            <Route path='/my-struck' component={MyStruck} />
+            <Route path='/checkout' component={Checkout} />
             <Route path='/member' component={UserProfile} />
             <Route path='/test' component={SkeletonDetailProduct} />
             <Route path='/register' component={Registration}/>
