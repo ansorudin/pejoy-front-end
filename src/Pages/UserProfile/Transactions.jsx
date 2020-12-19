@@ -3,8 +3,9 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import moment from 'moment';
 import Skeleton from 'react-loading-skeleton';
+import Countdown from 'react-countdown';
 
-import { getMyTransactions, confirmMyTransaction } from './../../Redux/Actions/UserProfile/myTransactionsAction';
+import { getMyTransactions, onExpiredTransaction, confirmMyTransaction } from './../../Redux/Actions/UserProfile/myTransactionsAction';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronCircleDown, faCreditCard, faCheckCircle, faCube, faTruck } from '@fortawesome/free-solid-svg-icons';
@@ -84,6 +85,34 @@ export class Transactions extends Component{
         this.props.getMyTransactions(data)
     }
 
+    onCountDown = (hours, minutes, seconds, completed) => {
+        if(completed){
+            this.setState({expired: true})
+        }else{
+            return <span>{hours}:{minutes}:{seconds}</span>;
+        }
+    }  
+
+    onExpired = (data1, data2) => {
+        const token = localStorage.getItem('token')
+
+        const dataUser = {
+            token,
+            status_name_id: 1
+        }
+
+        const dataTransaction = [
+            data1, 
+            data2
+        ]
+
+        this.props.onExpiredTransaction(dataUser, dataTransaction)
+    }
+
+    onCheckout = (transaction_id) => {
+        window.location = ('/checkout/' + transaction_id)
+    }
+
     openProduct = (product_id) => {
         window.location = ('/detail-product/' + product_id)
     }
@@ -126,18 +155,19 @@ export class Transactions extends Component{
                                 <p className="pa-font-size-15">
                                     Status :
                                 </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                    {value.status}
-                                </p>
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
+                                            {value.status}
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                            Transaction Expired
+                                        </p>
+                                }
                             </div>
                         </div>
                         <div>
-                            <p className="pa-font-size-15">
-                                Total :
-                            </p>
-                            <p className="font-weight-bold pa-font-size-16 pa-secondary">
-                                Rp.{(value.total).toLocaleString('Id-ID')}
-                            </p>
                             <p className="pa-font-size-15">
                                 Total :
                             </p>
@@ -158,7 +188,12 @@ export class Transactions extends Component{
                                             </div>
                                             <div className="px-4 py-0">
                                                 <div className="font-weight-bold pa-font-size-18 pa-main-light">
-                                                    {val.brand_name + ' ' + val.product_name}
+                                                    {
+                                                        val.product_name.length > 9?
+                                                            val.brand_name + ' ' + val.product_name.slice(0, 8) + '...'
+                                                        :
+                                                            val.brand_name + ' ' + val.product_name
+                                                    }
                                                 </div>
                                                 <div className="px-0 pt-0 pb-0 pa-secondary">
                                                     Rp.{(val.product_price).toLocaleString('Id-ID')}
@@ -200,9 +235,16 @@ export class Transactions extends Component{
                                 <p className="pa-font-size-15">
                                     Invoice :
                                 </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-main-light">
-                                    PJY/TRNSCTNS/000{value.id}
-                                </p>
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <p className="font-weight-bold pa-font-size-16 pa-main-light">
+                                            PJY/TRNSCTNS/000{value.id}
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-light-grey">
+                                            <del>PJY/TRNSCTNS/000{value.id}</del>
+                                        </p>
+                                }
                                 {
                                     value.status === 'Delivery'?
                                         <div onClick={() => this.onConfirmTransaction(value.id)} className="btn mx-0 my-1 px-3 py-1 font-weight-bold pa-button-submit pa-font-size-12 pa-main-light" style={{borderRadius: 10}}>
@@ -216,32 +258,80 @@ export class Transactions extends Component{
                                 <p className="pa-font-size-15">
                                     Status :
                                 </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                    {value.status}
-                                </p>
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
+                                            {value.status}
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                            Transaction Expired
+                                        </p>
+                                }
                             </div>
                             <div className="col-4 border-left text-right">
                                 <p className="pa-font-size-15">
-                                    Shipping Rates :
-                                </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-secondary">
-                                    Rp.{(value.shipping_rates).toLocaleString('Id-ID')}
-                                </p>
-                                <p className="pa-font-size-15">
                                     Total :
                                 </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-secondary">
-                                    Rp.{(value.total).toLocaleString('Id-ID')}
-                                </p>
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                            Rp.{(value.total).toLocaleString('Id-ID')}
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-light-grey">
+                                            Rp.{(value.total).toLocaleString('Id-ID')}
+                                        </p>
+                                }
                             </div>
                         </div>
-                        <div>
-                            <p className="pa-font-size-15">
-                                Shipping Address :
-                            </p>
-                            <p className="font-weight-bold pa-font-size-16 pa-main-light">
-                                {value.shipping_address}
-                            </p>
+                        <div className="row justify-content-between align-items-center px-0 pt-2 pb-2">
+                            <div className="col-6">
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <>
+                                            <p className="pa-font-size-15">
+                                                Shipping Address :
+                                            </p>
+                                            <p className="font-weight-bold pa-font-size-16 pa-main-light">
+                                                {value.shipping_address}
+                                            </p>
+                                        </>
+                                    :
+                                        null
+                                }
+                            </div>
+                            <div className="col-6 text-right">
+                                {
+                                    value.status === 'Waiting For Payment' && value.is_done === 0?
+                                        <div onClick={() => this.onCheckout(value.id)} className="btn mx-0 my-1 px-5 py-2 font-weight-bold pa-bg-secondary pa-font-size-12 pa-light" style={{borderRadius: 10}}>
+                                            Pay My Order
+                                        </div>
+                                    :
+                                        null
+                                }
+                                <div>
+                                    {
+                                        value.status === 'Waiting For Payment' && value.is_done === 0?
+                                            <>
+                                                <span className="mx-1 my-0 font-weight-bold">
+                                                    Pay Before : 
+                                                </span>
+                                                <span>
+                                                    <Countdown
+                                                        date={value.expired_at}
+                                                        onCountDown={this.onCountDown()}
+                                                        daysInHours={true}
+                                                        onComplete={() => this.onExpired(value.id, value.detail_transaction_to_update)}
+                                                        className="font-weight-bold pa-secondary"
+                                                    />
+                                                </span>
+                                            </>
+                                        :
+                                            null
+                                    }
+                                </div>
+                            </div>
                         </div>
                         <div className="mt-2 mb-3 border-bottom">
 
@@ -256,7 +346,12 @@ export class Transactions extends Component{
                                             </div>
                                             <div className="px-4 py-0">
                                                 <div className="font-weight-bold pa-font-size-18 pa-main-light">
-                                                    {val.brand_name + ' ' + val.product_name}
+                                                    {
+                                                        val.product_name.length > 9?
+                                                            val.brand_name + ' ' + val.product_name.slice(0, 8) + '...'
+                                                        :
+                                                            val.brand_name + ' ' + val.product_name
+                                                    }
                                                 </div>
                                                 <div className="px-0 pt-1 pb-0 pa-secondary">
                                                     Rp.{(val.product_price).toLocaleString('Id-ID')}
@@ -306,14 +401,19 @@ export class Transactions extends Component{
                                     null
                             }
                         </div>
-                        <div className="row justify-content-between px-3 pt-0 pb-2">
-                            <div className="font-weight-bold pa-dark">
-                                Status Transactions
-                            </div>
-                            <div>
-                                <FontAwesomeIcon onClick={() => this.setState({seeStatusTransactions: !this.state.seeStatusTransactions})} icon={faChevronCircleDown} className="fa-md pa-clickable-element pa-light-grey" />
-                            </div>
-                        </div>
+                        {
+                            value.status === 'Waiting For Payment' && value.is_done === 0?
+                                <div className="row justify-content-between px-3 pt-0 pb-2">
+                                    <div className="font-weight-bold pa-dark">
+                                        Status Transactions
+                                    </div>
+                                    <div>
+                                        <FontAwesomeIcon onClick={() => this.setState({seeStatusTransactions: !this.state.seeStatusTransactions})} icon={faChevronCircleDown} className="fa-md pa-clickable-element pa-light-grey" />
+                                    </div>
+                                </div>
+                            :
+                                null
+                        }
                         <div className="row align-items-center px-0 py-2">
                         {
                             this.state.seeStatusTransactions?
@@ -530,6 +630,6 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = { getMyTransactions, confirmMyTransaction }
+const mapDispatchToProps = { getMyTransactions, onExpiredTransaction, confirmMyTransaction }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transactions)

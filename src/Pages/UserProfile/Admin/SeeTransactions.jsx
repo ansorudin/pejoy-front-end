@@ -94,7 +94,7 @@ export class SeeTransactions extends Component{
                                 </p>
                                 {
                                     value.status === 'Paid'?
-                                        <div onClick={() => this.onSendProduct()} className="btn mx-0 my-1 px-3 py-1 font-weight-bold pa-button-submit pa-font-size-12 pa-main-light" style={{borderRadius: 10}}>
+                                        <div onClick={() => this.onSendProduct(value.id, value.detail_transaction_to_update)} className="btn mx-0 my-1 px-3 py-1 font-weight-bold pa-button-submit pa-font-size-12 pa-main-light" style={{borderRadius: 10}}>
                                             Send Products
                                         </div>
                                     :
