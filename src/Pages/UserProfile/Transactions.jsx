@@ -132,13 +132,19 @@ export class Transactions extends Component{
                             </div>
                         </div>
                         <div>
-                                <p className="pa-font-size-15">
-                                    Total :
-                                </p>
-                                <p className="font-weight-bold pa-font-size-16 pa-secondary">
-                                    Rp.{(value.total).toLocaleString('Id-ID')}
-                                </p>
-                            </div>
+                            <p className="pa-font-size-15">
+                                Total :
+                            </p>
+                            <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                Rp.{(value.total).toLocaleString('Id-ID')}
+                            </p>
+                            <p className="pa-font-size-15">
+                                Total :
+                            </p>
+                            <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                Rp.{(value.total).toLocaleString('Id-ID')}
+                            </p>
+                        </div>
                         <div className="mt-2 mb-3 border-bottom">
 
                         </div>
@@ -216,12 +222,26 @@ export class Transactions extends Component{
                             </div>
                             <div className="col-4 border-left text-right">
                                 <p className="pa-font-size-15">
+                                    Shipping Rates :
+                                </p>
+                                <p className="font-weight-bold pa-font-size-16 pa-secondary">
+                                    Rp.{(value.shipping_rates).toLocaleString('Id-ID')}
+                                </p>
+                                <p className="pa-font-size-15">
                                     Total :
                                 </p>
                                 <p className="font-weight-bold pa-font-size-16 pa-secondary">
                                     Rp.{(value.total).toLocaleString('Id-ID')}
                                 </p>
                             </div>
+                        </div>
+                        <div>
+                            <p className="pa-font-size-15">
+                                Shipping Address :
+                            </p>
+                            <p className="font-weight-bold pa-font-size-16 pa-main-light">
+                                {value.shipping_address}
+                            </p>
                         </div>
                         <div className="mt-2 mb-3 border-bottom">
 

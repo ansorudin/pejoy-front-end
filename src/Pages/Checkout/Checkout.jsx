@@ -20,16 +20,16 @@ export class Checkout extends React.Component {
         return(
             <div>
                 {/* CHECKOUT SECTION */}
-                <div className="container-fluid my-5 px-5">
-                    <div className="row justify-content-center">
+                <div className="container-fluid px-5 py-5">
+                    <div className="row justify-content-center px-0 py-5">
                         {/* Page Title */}
-                        <div className="col-12">
+                        <div className="col-12 px-0 pt-4 pb-0">
                             <h2 className="mx-3 text-center text-md-left font-weight-bold">Checkout Page</h2>
                         </div>
 
                         {/* Shipping Address */}
-                        <div className="col-12 col-md-6 py-3">
-                            <div className="px-3 pt-3 pb-1">
+                        <div className="col-12 col-md-6 px-3 py-3">
+                            <div className="px-0 pt-0 pb-1">
                                 <h4>Shipping Address</h4>
                             </div>
                             <div className="px-4 py-1 border myfsid-bg-light-grey">
@@ -47,15 +47,11 @@ export class Checkout extends React.Component {
                                     Titipkan Ke Rumah Sebelah Apabila Tidak Ada Orang di Rumah
                                 </p>
                             </div>
-                            
-                            <div className="pt-3 pb-3">
-                                <input type="button" value="Change Shipping Address" className="btn rounded-0 w-100 py-2 myfsid-bg-main-light myfsid-light"/>
-                            </div>
                         </div>
 
                         {/* My Orders & Payment Methods */}
-                        <div className="col-12 col-md-6 py-3">
-                            <div className="px-3 pt-3 pb-1">
+                        <div className="col-12 col-md-6 px-3 py-3">
+                            <div className="px-0 pt-0 pb-1">
                                 <h4>My Orders</h4>
                                 <div className="row pt-1">
                                     {
@@ -127,7 +123,7 @@ export class Checkout extends React.Component {
                                     </div>
                                 </div>
                             </div>
-                            <div className="px-3 pt-5 pb-1">
+                            <div className="px-0 pt-5 pb-1">
                                 <h4>Payment Methods</h4>
                                 <div className="row pt-1">
                                     <div className="col-2 py-2 border border-right-0 text-center font-weight-bold myfsid-bg-light-grey">
@@ -147,7 +143,7 @@ export class Checkout extends React.Component {
                                     {
                                         this.state.paymentMethods1Toggle?
                                             <div className="col-12 py-2 border border-top-0">
-                                                2468 - 10121418 - 3000 ( A/N PT. Football Store Indonesia )
+                                                0306-0306-0306 ( A/N PT. Pejoy Indonesia Maju )
                                             </div>
                                         :
                                             null
@@ -169,7 +165,7 @@ export class Checkout extends React.Component {
                                     {
                                         this.state.paymentMethods2Toggle?
                                             <div className="col-12 py-2 border border-top-0">
-                                                0812-1418-6000 ( A/N PT. Football Store Indonesia )
+                                                0812-1418-6000 ( A/N PT. Pejoy Indonesia Maju )
                                             </div>
                                         :
                                             null
@@ -191,7 +187,7 @@ export class Checkout extends React.Component {
                                     {
                                         this.state.paymentMethods3Toggle?
                                             <div className="col-12 py-2 border border-top-0">
-                                                "495" + 0812-1418-6000
+                                                "0306" + 0812-1418-6000
                                             </div>
                                         :
                                             null
@@ -199,9 +195,9 @@ export class Checkout extends React.Component {
                                     <div className="col-12 px-0 py-0 mx-0 my-3">
                                         {
                                             this.state.data?
-                                                <input type="button" value="Pay My Orders" onClick={this.onPayment} className="btn rounded-0 w-100 py-2 myfsid-bg-secondary myfsid-light"/>
+                                                <input type="button" value="Pay My Orders" onClick={this.onPayment} className="btn rounded-0 w-100 py-2 pa-bg-secondary pa-light"/>
                                             :
-                                                <input type="button" disabled value="Pay My Orders" onClick={this.onPayment} className="btn rounded-0 w-100 py-2 myfsid-bg-secondary myfsid-light"/>
+                                                <input type="button" disabled value="Pay My Orders" onClick={this.onPayment} className="btn rounded-0 w-100 py-2 pa-bg-secondary pa-light"/>
                                         }
                                     </div>
                                 </div>
