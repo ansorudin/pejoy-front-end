@@ -12,6 +12,10 @@ import CustomerCareIcon from './../../Support/Images/Customer Care Icon.png';
 import AdminIcon from './../../Support/Images/Admin Chat Logo.png';
 
 export class Footer extends React.Component {
+    constructor(props) {
+        super(props);
+        this.chatRoom = React.createRef();
+    }
 
     state = {
         email: '',
@@ -27,11 +31,11 @@ export class Footer extends React.Component {
     }
 
     openChatRoom = () => {
-        this.refs.chatRoom.style.display = "block";
+        this.chatRoom.current.style.display = "block";
       }
       
     closeChatRoom = () => {
-        this.refs.chatRoom.style.display = "none";
+        this.chatRoom.current.style.display = "none";
     }
 
     onStartChat = () => {
@@ -120,7 +124,7 @@ export class Footer extends React.Component {
                             null
                 }
 
-                <div ref="chatRoom" className="chat-popup">
+                <div ref={this.chatRoom} className="chat-popup">
                     <div className="row justify-content-between mx-0 my-0 px-3 py-3 pa-bg-main-light" style={{borderTopLeftRadius: 5, borderTopRightRadius: 5}}>
                         <div className="col-6">
                             <img src={PejoyLogo} width="100%" />

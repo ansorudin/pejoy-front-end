@@ -30,6 +30,11 @@ import Wishlist from './../../Support/Images/Wishlist.png';
 import UploadIcon from './../../Support/Images/Upload.png';
 
 export class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.sidebar = React.createRef();
+    }
+
     state = {
         loginStatus: null,
         loginErrorMessage: '',
@@ -57,11 +62,11 @@ export class Navbar extends Component {
     }
 
     onOpenSidebar = () => {
-        this.refs.sidebar.style.width = "250px";
+        this.sidebar.current.style.width = "250px";
     }
 
     onCloseSidebar = () => {
-        this.refs.sidebar.style.width = "0px";
+        this.sidebar.current.style.width = "0px";
     }
 
     mapDataCart = () => {
@@ -427,7 +432,7 @@ export class Navbar extends Component {
 
 
                 {/* SIDEBAR SECTION */}
-                <div ref="sidebar" className="pa-sidebar-display sidebar">
+                <div ref={this.sidebar} className="pa-sidebar-display sidebar">
                     <div className="row">
                         <div className="text-align-center menu-title">
                             Menu

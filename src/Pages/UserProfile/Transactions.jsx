@@ -156,13 +156,13 @@ export class Transactions extends Component{
                                     Status :
                                 </p>
                                 {
-                                    value.status === 'Waiting For Payment' && value.is_done === 0?
-                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                            {value.status}
-                                        </p>
-                                    :
+                                    value.status === 'Waiting For Payment' && value.is_done === 3?
                                         <p className="font-weight-bold pa-font-size-16 pa-secondary">
                                             Transaction Expired
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
+                                            {value.status}
                                         </p>
                                 }
                             </div>
@@ -259,13 +259,13 @@ export class Transactions extends Component{
                                     Status :
                                 </p>
                                 {
-                                    value.status === 'Waiting For Payment' && value.is_done === 0?
-                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
-                                            {value.status}
-                                        </p>
-                                    :
+                                    value.status === 'Waiting For Payment' && value.is_done === 3?
                                         <p className="font-weight-bold pa-font-size-16 pa-secondary">
                                             Transaction Expired
+                                        </p>
+                                    :
+                                        <p className="font-weight-bold pa-font-size-16 pa-dark">
+                                            {value.status}
                                         </p>
                                 }
                             </div>

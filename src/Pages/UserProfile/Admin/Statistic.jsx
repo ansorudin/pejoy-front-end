@@ -115,7 +115,10 @@ export class Statistic extends Component{
                                 </p>
                                 <p className="font-weight-light pa-font-size-30 pa-dark-grey">
                                     Rp.{
-                                        (this.props.dataStatistic.data.getIncomeSuccess[0].total_income_success).toLocaleString('Id-ID')
+                                        this.props.dataStatistic.data.getIncomeSuccess[0].total_income_success?
+                                            (this.props.dataStatistic.data.getIncomeSuccess[0].total_income_success).toLocaleString('Id-ID')
+                                        :
+                                            null
                                     }
                                     <span className="px-2 py-0 font-weight-light pa-font-size-30 pa-dark-grey">
                                         Success
