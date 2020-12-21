@@ -8,8 +8,12 @@ import { GoogleLogin } from 'react-google-login';
 import Axios from 'axios';
 import { UrlAPI } from '../../Support/Constants/UrlAPI';
 import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { connect } from 'react-redux';
+import {loginSuccess} from './../../Redux/Actions/Auth/authAction'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
-const SigninSchema = ({onClick}) => {
+const SigninSchema = ({onClick, history, onClickForgot}) => {
     const [input, setInput] = useState({
         email : '',
         password : ''
@@ -18,6 +22,7 @@ const SigninSchema = ({onClick}) => {
         email : '',
         password : ''
     })
+
     const [errorStatus, setErrorStatus] = useState(false)
     const [eye, setEye] = useState(false)
 
@@ -62,10 +67,36 @@ const SigninSchema = ({onClick}) => {
     const sendGoogleToken = tokenId => {
         Axios.post(UrlAPI + 'authBaru/googlelogin', {idToken : tokenId})
         .then((res) => {
-            console.log(res)
+            if(res.data.error){
+                toast.error(res.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            }else{
+                loginSuccess(res.data.message)
+                localStorage.setItem('token', res.data.token)
+                if(res.data.role === 0){
+                    history.push('/')
+                }else{
+                    history.push('/member')
+                }
+            }
         })
         .catch((err) => {
-            console.log(err)
+            toast.error('Login with Google failed, try again', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
         })
     }
 
@@ -77,10 +108,36 @@ const SigninSchema = ({onClick}) => {
     const sendFacebookToken = (userID, accessToken) => {
         Axios.post(UrlAPI + 'authBaru/facebooklogin', {userID, accessToken})
         .then((res) => {
-            console.log(res)
+            if(res.data.error){
+                toast.error(res.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            }else{
+                loginSuccess(res.data.message)
+                localStorage.setItem('token', res.data.token)
+                if(res.data.role === 0){
+                    history.push('/')
+                }else{
+                    history.push('/member')
+                }
+            }
         })
         .catch((err) => {
-            console.log('Facebook Login Failed' + err)
+            toast.error('Login with Facebook failed, try again', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
         })
     }
 
@@ -88,9 +145,51 @@ const SigninSchema = ({onClick}) => {
         sendFacebookToken(response.userID, response.accessToken)
     }
 
+    const onButtonSubmit = () => {
+        try {
+            if(!input.email || !input.password) throw new Error('Data belum complete')
+            Axios.post(UrlAPI + 'authBaru/login', {email : input.email, password : input.password})
+            .then((res) => {
+                if(res.data.error){
+                    toast.error(res.data.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        });
+                }else{
+                    loginSuccess(res.data.message)
+                    localStorage.setItem('token', res.data.token)
+                    if(res.data.role === 0){
+                        history.push('/')
+                    }else{
+                        history.push('/member')
+                    }
+                }
+            })
+            .catch((err) => {
+                toast.error('Login failed. Try again', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
 
     return (
         <div className='right-side-container w-100'>
+            <ToastContainer />
             <h6>Welcome Back</h6>
             <div className='social-auth'>
                 <GoogleLogin
@@ -161,12 +260,12 @@ const SigninSchema = ({onClick}) => {
                         </span>
                     </div>
                 </div>
-                <div style={{textAlign : 'end'}}>
+                <div onClick={onClickForgot} style={{textAlign : 'end'}}>
                     <p style={{fontSize : 14, fontWeight : 'bolder', cursor : 'pointer'}}>Forgot password</p>
                 </div>
                 <div className='align-self-end mt-3'>
                     <button 
-                        onClick={() => console.log('buton masuk')}
+                        onClick={onButtonSubmit}
                         className='aa-btn' 
                         disabled=
                             {
@@ -184,4 +283,14 @@ const SigninSchema = ({onClick}) => {
     )
 }
 
-export default SigninSchema
+const mapStateToProps = (state) => {
+    return{
+        login : state.login
+    }
+}
+
+const mapDispatchToProps = {
+    loginSuccess
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (SigninSchema)

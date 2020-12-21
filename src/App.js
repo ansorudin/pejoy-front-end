@@ -14,14 +14,10 @@ import DetailProduct from './Pages/DetailProduct/DetailProduct';
 import Checkout from './Pages/Checkout/Checkout';
 import UserProfile from './Pages/UserProfile/UserProfile';
 import Footer from './Component/Footer/Footer';
-import CardSimilarProduct from './Pages/DetailProduct/DetailProductComponent/CardSimilarProduct';
-import Registration from './Pages/Registration/Registration/Registration'
 import Cart from './Pages/Cart/Cart'
-import Verification from './Pages/Registration/Registration/Screens/verification/verficication'
-import ResetPass from './Pages/Registration/Registration/Screens/Reset/ResetPass'
-import SkeletonLoadingListProduct from './Pages/ListProduct/ComponentListProduct/SkeletonLoadingListProduct';
 import SkeletonDetailProduct from './Pages/DetailProduct/DetailProductComponent/SkeletonDetailProduct';
 import RegistrationBaru from './Pages/RegistrationUpdate/RegistrationBaru'
+import UpdatePassword from './Pages/RegistrationUpdate/UpdatePassword';
 
 
 
@@ -42,8 +38,7 @@ const App = () => {
             <Route path='/test' component={SkeletonDetailProduct} />
             <Route path='/register' component={RegistrationBaru}/>
             <Route path='/cart' component={Cart}/>
-            {/* <Route path='/verification' component={Verification}/>
-            <Route path='/resetpassword/:token' component={ResetPass}/> */}
+            <Route path='/update-password/:id' component={UpdatePassword} />
           </Switch>
         <Footer />
 

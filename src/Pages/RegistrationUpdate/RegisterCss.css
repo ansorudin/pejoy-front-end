@@ -171,6 +171,13 @@
     opacity: 1;
 }
 
+.login-forgot-active{
+    transform: translateX(0);
+    transform: translateY(200%);
+    opacity: 0;
+}
+
+
 .signup-schema{
     transform: translateX(0);
     position: absolute;
@@ -183,3 +190,18 @@
     transform: translateX(-100%);
     opacity: 0;
 }
+
+.forgot-password{
+    transform: translateX(0);
+    transform: translateY(-200%);
+    position: absolute;
+    right: 0;
+    opacity: 0;
+    transition: 500ms ease-in;
+}
+
+.forgot-password-active{
+    transform: translateY(0);
+    opacity: 1;
+}
+

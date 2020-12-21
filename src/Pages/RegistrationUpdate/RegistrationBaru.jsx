@@ -10,12 +10,14 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import SignupSchema from './SignupSchema';
 import SigninSchema from './SigninSchema';
+import ForgotPassword from './ForgotPassword'
 
 
 
-const RegistrationBaru = () => {
+const RegistrationBaru = (props) => {
     const [loginActive, setLoginActive] = useState(false)
     const [signupActive, setSignupActive] = useState(false)
+    const [forgotPass, setForgotPass] = useState(false)
     
     const desktopSettings = {
         dots: false,
@@ -26,7 +28,6 @@ const RegistrationBaru = () => {
         slidesToShow: 1,
         slidesToScroll: 1
     }
-
 
     return (
         <div className='container' style={{paddingTop : 190, paddingBottom : 110}}>
@@ -51,10 +52,13 @@ const RegistrationBaru = () => {
                     </Slider>
                 </div>
                 <div className={signupActive ? 'col-md-5 py-5 signup-schema signup-schema-active' : 'col-md-5 py-5 signup-schema' }>
-                    <SignupSchema onClick={() => {setSignupActive(!signupActive); setLoginActive(!loginActive)}} />
+                    <SignupSchema history={props.history} onClick={() => {setSignupActive(!signupActive); setLoginActive(!loginActive)}} />
                 </div>
-                <div className={loginActive ? 'col-md-5 py-5 login-schema login-schema-active' : 'col-md-5 py-5 login-schema'}>
-                    <SigninSchema onClick={() => {setLoginActive(!loginActive);setSignupActive(!signupActive)}} />
+                <div  className={loginActive ? forgotPass ? 'col-md-5 py-5 login-schema login-schema-active login-forgot-active': 'col-md-5 py-5 login-schema login-schema-active'  : 'col-md-5 py-5 login-schema'}>
+                    <SigninSchema onClickForgot={() => {setForgotPass(!forgotPass)}} history={props.history} onClick={() => {setLoginActive(!loginActive);setSignupActive(!signupActive)}} />
+                </div>
+                <div className={forgotPass ? 'col-md-5 py-5 forgot-password forgot-password-active' : 'col-md-5 py-5 forgot-password'}>
+                    <ForgotPassword onClick={() => {setForgotPass(!forgotPass)}} />
                 </div>
             </div>
         </div>

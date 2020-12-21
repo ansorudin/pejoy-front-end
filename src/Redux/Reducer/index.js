@@ -16,6 +16,7 @@ import UpdateQtyReducer from './Products/UpdateQtyReducer';
 import checkoutReducer from './Checkout/checkoutReducer';
 import DeleteCartReducer from './Products/DeleteCartReducer'
 import AddCartReducer from './Products/AddCartReducer'
+import LoginReducer from './Auth/LoginReducer';
 
 const rootReducer = combineReducers({
     user: userProfileReducer,
@@ -33,7 +34,8 @@ const rootReducer = combineReducers({
     updateQty : UpdateQtyReducer,
     checkout : checkoutReducer,
     deleteCart : DeleteCartReducer,
-    addCart : AddCartReducer
+    addCart : AddCartReducer,
+    login : LoginReducer
 })
 
 export default rootReducer

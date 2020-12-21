@@ -37,7 +37,7 @@
     "react-scripts": "4.0.0",
     "react-slick": "^0.27.13",
     "react-spinners": "^0.9.0",
-    "react-toastify": "^6.1.0",
+    "react-toastify": "^6.2.0",
     "reactstrap": "^8.7.1",
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",

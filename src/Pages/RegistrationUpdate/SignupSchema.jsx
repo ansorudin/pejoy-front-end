@@ -3,21 +3,42 @@ import './RegisterCss.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebookSquare, faGoogle, faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { faEnvelope, faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLock, faUser } from '@fortawesome/free-solid-svg-icons';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import FacebookLogin from 'react-facebook-login/dist/facebook-login-render-props';
+import { GoogleLogin } from 'react-google-login';
+import Axios from 'axios';
+import { UrlAPI } from '../../Support/Constants/UrlAPI';
+import {loginSuccess} from './../../Redux/Actions/Auth/authAction'
+import { connect } from 'react-redux';
+import BeatLoader from "react-spinners/BeatLoader";
+import { css } from "@emotion/core";
 
-const SignupSchema = ({onClick}) => {
+const override = css`
+  display: block;
+  margin: 0 auto;
+  border-color: red;
+`;
+
+const SignupSchema = ({onClick, history, loginSuccess}) => {
     const [input, setInput] = useState({
         email : '',
         password : '',
-        confirmPassword : ''
+        confirmPassword : '',
+        username : ''
     })
     const [error, setError] = useState({
         email : '',
         password : '',
-        confirmPassword : ''
+        confirmPassword : '',
+        username : ''
     })
     const [errorStatus, setErrorStatus] = useState(false)
     const [eye, setEye] = useState(false)
+    const [loading, setLoading] = useState(false)
+
+
 
     const validationEmail = (e) => {
         const re = /\S+@\S+\.\S+/;
@@ -34,6 +55,22 @@ const SignupSchema = ({onClick}) => {
             setErrorStatus(true)
         }
         setInput({...input, email : e.target.value})
+    }
+
+    const validationUsername = (e) => {
+        let username = e.target.value
+
+        if(username.length === 0){
+            setError({...error, username : 'Username tidak boleh kosong'})
+            setErrorStatus(true)
+        }else if(username.length < 3 || username.length > 32 ){
+            setError({...error, username : 'Username minimal 3 char dan maksimal 32 char'})
+            setErrorStatus(true)
+        }else{
+            setError({...error, username : 'nice'})
+            setErrorStatus(false)
+        }
+        setInput({...input, username : e.target.value})
     }
 
     const validationPassword = (e) => {
@@ -72,16 +109,165 @@ const SignupSchema = ({onClick}) => {
         }
         setInput({...input, confirmPassword : e.target.value})
     }
+
+    // send google token
+    const sendGoogleToken = tokenId => {
+        Axios.post(UrlAPI + 'authBaru/googlelogin', {idToken : tokenId})
+        .then((res) => {
+            if(res.data.error){
+                toast.error(res.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            }else{
+                loginSuccess(res.data.message)
+                localStorage.setItem('token', res.data.token)
+                if(res.data.role === 0){
+                    history.push('/')
+                }else{
+                    history.push('/member')
+                }
+            }
+        })
+        .catch((err) => {
+            toast.error('Login with Google failed, try again', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        })
+    }
+
+    const responseGoogle = response => {
+        console.log(response)
+        sendGoogleToken(response.tokenId)
+    }
+
+    const sendFacebookToken = (userID, accessToken) => {
+        Axios.post(UrlAPI + 'authBaru/facebooklogin', {userID, accessToken})
+        .then((res) => {
+            if(res.data.error){
+                toast.error(res.data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            }else{
+                loginSuccess(res.data.message)
+                localStorage.setItem('token', res.data.token)
+                if(res.data.role === 0){
+                    history.push('/')
+                }else{
+                    history.push('/member')
+                }
+            }
+        })
+        .catch((err) => {
+            toast.error('Login with Facebook failed, try again', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                });
+        })
+    }
+
+    const responseFacebook = response => {
+        sendFacebookToken(response.userID, response.accessToken)
+    }
+
+    const onButtonSubmit = () => {
+        try {
+            if(!input.email || !input.password || !input.confirmPassword || !input.username) throw new Error('Data tidak lengkap')
+            if(input.password !== input.confirmPassword) throw new Error('Password tidak sama')
+            
+            setLoading(true)
+            Axios.post(UrlAPI + 'authBaru/register', {email : input.email, password : input.password, username : input.username})
+            .then((res) => {
+                if(res.data.error){
+                    toast.error(res.data.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        });
+                    setLoading(false)
+                }else{
+                    setLoading(false)
+                    loginSuccess(res.data.message)
+                    localStorage.setItem('token', res.data.token)
+                    if(res.data.role === 0){
+                        history.push('/')
+                    }else{
+                        history.push('/member')
+                    }
+                }
+            })
+            .catch((err) => {
+                setLoading(false)
+                toast.error('Signup failed, try again', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    });
+            })
+        } catch (error) {
+            console.log(error)
+        }
+    }
     return (
         <div className='right-side-container w-100'>
-            <h6>Create account here</h6>
+            <ToastContainer />
+            <h6>Create accout here</h6>
             <div className='social-auth'>
-                <div className='icon-social'>
-                    <FontAwesomeIcon icon={faGoogle} />
-                </div>
-                <div className='icon-social'>
-                    <FontAwesomeIcon icon={faFacebookSquare} style={{fontSize : 18}} />
-                </div>
+                <GoogleLogin
+                clientId={'484227442752-uv4bai641h7vdjl9g83amlk46nq4alqa.apps.googleusercontent.com'}
+                onSuccess={responseGoogle}
+                onFailure={responseGoogle}
+                render={renderProps => (
+                    <div onClick={renderProps.onClick} className='icon-social'>
+                        <FontAwesomeIcon icon={faGoogle} />
+                    </div>
+                )}
+                >
+                </GoogleLogin>
+
+                <FacebookLogin
+                appId={'390305322240658'}
+                autoLoad={false}
+                callback={responseFacebook}
+                render={renderProps => (
+                    <div onClick={renderProps.onClick} className='icon-social'>
+                        <FontAwesomeIcon icon={faFacebookSquare} style={{fontSize : 18}} />
+                    </div>
+
+                )}
+                >
+                </FacebookLogin>
+                
                 <div className='icon-social'>
                     <FontAwesomeIcon icon={faTwitter} />
                 </div>
@@ -90,6 +276,22 @@ const SignupSchema = ({onClick}) => {
             <p>or use email for registration</p>
             
             <div className='w-75 py-4'>
+                <div className='d-flex'>
+                    <span className='icon-in-form'>
+                        <FontAwesomeIcon icon={faUser} />
+                    </span>
+                    <div className='input-box'>
+                        <input className={error.username === '' ? 'input-norm' : error.username === 'nice' ? 'input-valid' : 'input-notvalid'} type='text' value={input.username} onChange={(e) => validationUsername(e)} />
+                        <label 
+                            className={input.username !== '' && error.username === '' ? 'input-filed' : 
+                            input.username !== '' && error.username === 'nice' ? 'input-filed-valid' : 
+                            input.username !== '' && error.username !== 'nice' && error.username !== '' ? 'input-filed-notvalid' : 
+                            input.username === '' && error.username !== 'nice' && error.username !== '' ? 'input-filed-notvalid' : ''} >
+                                Username
+                        </label>
+                        <p>{error.username !== 'nice' ? error.username : ''}</p>
+                    </div>
+                </div>
                 <div className='d-flex'>
                     <span className='icon-in-form'>
                         <FontAwesomeIcon icon={faEnvelope} />
@@ -146,14 +348,24 @@ const SignupSchema = ({onClick}) => {
                 </div>
                 <div className='align-self-end mt-3'>
                     <button 
-                        onClick={() => console.log('buton masuk')}
+                        onClick={onButtonSubmit}
                         className='aa-btn' 
                         disabled=
                             {
-                                errorStatus && input.email === '' || input.password === '' || input.confirmPassword === '' ? true : false
+                                errorStatus && input.email === '' || input.password === '' || input.confirmPassword === '' || input.username === '' ? true : false
                             }
                     >
-                        Submit
+                        {
+                            loading ?
+                            <BeatLoader
+                            css={override}
+                            size={10}
+                            color={"#000"}
+                            loading={loading}
+                            />
+                            :
+                            <p>Submit</p>
+                        }
                     </button>
                 </div>
                 <div className='mt-4'>
@@ -164,4 +376,14 @@ const SignupSchema = ({onClick}) => {
     )
 }
 
-export default SignupSchema
+const mapStateToProps = (state) => {
+    return{
+        login : state.login
+    }
+}
+
+const mapDispatchToProps = {
+    loginSuccess
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (SignupSchema)
