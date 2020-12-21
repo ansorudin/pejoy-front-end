@@ -21,6 +21,7 @@ import Verification from './Pages/Registration/Registration/Screens/verification
 import ResetPass from './Pages/Registration/Registration/Screens/Reset/ResetPass'
 import SkeletonLoadingListProduct from './Pages/ListProduct/ComponentListProduct/SkeletonLoadingListProduct';
 import SkeletonDetailProduct from './Pages/DetailProduct/DetailProductComponent/SkeletonDetailProduct';
+import RegistrationBaru from './Pages/RegistrationUpdate/RegistrationBaru'
 
 
 
@@ -39,10 +40,10 @@ const App = () => {
             <Route path='/checkout' component={Checkout} />
             <Route path='/member' component={UserProfile} />
             <Route path='/test' component={SkeletonDetailProduct} />
-            <Route path='/register' component={Registration}/>
+            <Route path='/register' component={RegistrationBaru}/>
             <Route path='/cart' component={Cart}/>
-            <Route path='/verification' component={Verification}/>
-            <Route path='/resetpassword/:token' component={ResetPass}/>
+            {/* <Route path='/verification' component={Verification}/>
+            <Route path='/resetpassword/:token' component={ResetPass}/> */}
           </Switch>
         <Footer />
 
