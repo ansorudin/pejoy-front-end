@@ -78,12 +78,12 @@ const SigninSchema = ({onClick, history, onClickForgot}) => {
                     progress: undefined,
                     });
             }else{
-                loginSuccess(res.data.message)
+                loginSuccess(res.data.token)
                 localStorage.setItem('token', res.data.token)
                 if(res.data.role === 0){
-                    history.push('/')
+                    window.location = ('/')
                 }else{
-                    history.push('/member')
+                    window.location = ('/member')
                 }
             }
         })
@@ -122,9 +122,9 @@ const SigninSchema = ({onClick, history, onClickForgot}) => {
                 loginSuccess(res.data.message)
                 localStorage.setItem('token', res.data.token)
                 if(res.data.role === 0){
-                    history.push('/')
+                    window.location = ('/')
                 }else{
-                    history.push('/member')
+                    window.location = ('/member')
                 }
             }
         })
@@ -164,9 +164,9 @@ const SigninSchema = ({onClick, history, onClickForgot}) => {
                     loginSuccess(res.data.message)
                     localStorage.setItem('token', res.data.token)
                     if(res.data.role === 0){
-                        history.push('/')
+                        window.location = ('/')
                     }else{
-                        history.push('/member')
+                        window.location = ('/member')
                     }
                 }
             })

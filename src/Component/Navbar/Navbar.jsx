@@ -60,6 +60,7 @@ export class Navbar extends Component {
         window.onscroll = function() { ScrollFunction() }
     }
 
+
     onOpenSidebar = () => {
         this.sidebar.current.style.width = "250px";
     }
@@ -419,7 +420,9 @@ export class Navbar extends Component {
                                                 </Link>
                                             </div>
                                             <div className="btn px-3 py-0 pa-bg-light" style={{borderWidth: 2, borderColor: "#fdfdfd", color: "#0095da"}}>
-                                                Daftar
+                                                <Link to='/register' className="pa-link">
+                                                    Register
+                                                </Link>
                                             </div>
                                         </div>
                                 }
@@ -562,7 +565,8 @@ export class Navbar extends Component {
 const mapStateToProps = (state) => {
     return{
         user: state.user,
-        cart: state.cart
+        cart: state.cart,
+        login : state.login
     }
 }
 

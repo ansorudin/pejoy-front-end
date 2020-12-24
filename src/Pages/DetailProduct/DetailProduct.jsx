@@ -53,6 +53,7 @@ const DetailProduct = (props) => {
     useEffect(() => {
         getDetailData()
         getSimilarProduct()
+        window.scrollTo(0, 0)
     }, [props.match.params.id])
 
     
@@ -239,15 +240,16 @@ const DetailProduct = (props) => {
                                 </p>
                                 :
                                 <span>
-                                    <p style={{fontSize : 18}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (parseInt(dataApi.size[0].price)).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
-                                    <p style={{fontSize : 18}}>
-                                        Now Rp.
+                                    <p style={{fontSize : 16}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (parseInt(dataApi.size[0].price)).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
+                                    <p style={{fontSize : 18, color : 'red'}}>
+                                        Now Rp. {' '}
                                         {
                                             size.uk === 'Pick a Size' ? 
                                             dataApi.size && dataApi.productInfo && (dataApi.size[0].price - (dataApi.size[0].price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID')  
                                             : 
                                             dataApi.productInfo && (size.price - (size.price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID') 
                                         }
+                                        <span> ({dataApi.productInfo && dataApi.productInfo.discount}%)</span>
                                     </p>
                                 </span>
                             }
@@ -305,28 +307,14 @@ const DetailProduct = (props) => {
                         </div>
                     </div>
                        
-                    <div style={{marginTop : 10}}>
+                    <div style={{marginTop : 10, cursor : 'pointer'}}>
                         <p style={{fontSize : 12}}>Shipping rate information</p>
 
-                    </div>
-
-                    <div style={{marginTop : 20}}>
-                        <div onClick={getStockGudang}>See Stock gudang</div>
-                        <span>
-                            {
-                                dataGudangStock && dataGudangStock.map((val) => {
-                                    return(
-                                        <p>Stock gudang {val.city_gudang}  : {val.stock_customer}</p>
-                                    )
-
-                                })
-                            }
-                        </span>
                     </div>
                 </div>
                 
             </div>
-            <div className='pt-3'>
+            <div className='pt-3 pb-5'>
                 <p style={{fontSize : 20, fontWeight : 800, marginBottom : 30}}>Similar Product</p>
                 <div className='row'>
                     {

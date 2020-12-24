@@ -128,9 +128,9 @@ const SignupSchema = ({onClick, history, loginSuccess}) => {
                 loginSuccess(res.data.message)
                 localStorage.setItem('token', res.data.token)
                 if(res.data.role === 0){
-                    history.push('/')
+                    window.location = ('/')
                 }else{
-                    history.push('/member')
+                    window.location = ('/member')
                 }
             }
         })
@@ -169,9 +169,9 @@ const SignupSchema = ({onClick, history, loginSuccess}) => {
                 loginSuccess(res.data.message)
                 localStorage.setItem('token', res.data.token)
                 if(res.data.role === 0){
-                    history.push('/')
+                    window.location = ('/')
                 }else{
-                    history.push('/member')
+                    window.location = ('/member')
                 }
             }
         })
@@ -216,9 +216,9 @@ const SignupSchema = ({onClick, history, loginSuccess}) => {
                     loginSuccess(res.data.message)
                     localStorage.setItem('token', res.data.token)
                     if(res.data.role === 0){
-                        history.push('/')
+                        window.location = ('/')
                     }else{
-                        history.push('/member')
+                        window.location = ('/member')
                     }
                 }
             })

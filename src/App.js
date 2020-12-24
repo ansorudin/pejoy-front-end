@@ -18,6 +18,7 @@ import Cart from './Pages/Cart/Cart'
 import SkeletonDetailProduct from './Pages/DetailProduct/DetailProductComponent/SkeletonDetailProduct';
 import RegistrationBaru from './Pages/RegistrationUpdate/RegistrationBaru'
 import UpdatePassword from './Pages/RegistrationUpdate/UpdatePassword';
+import Verification from './Pages/RegistrationUpdate/Verification';
 
 
 
@@ -39,6 +40,7 @@ const App = () => {
             <Route path='/register' component={RegistrationBaru}/>
             <Route path='/cart' component={Cart}/>
             <Route path='/update-password/:id' component={UpdatePassword} />
+            <Route path='/email-verification/:id' component={Verification} />
           </Switch>
         <Footer />
 

@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom'
 import { BeatLoader } from 'react-spinners'
 import { css } from "@emotion/core";
 import ModalToPayment from './CartComponent/ModalToPayment'
+import ModalShipping from './CartComponent/ModalShipping'
 
 
 const override = css`
@@ -32,6 +33,7 @@ const Cart = ({stateAddTransaction,stateDeleteCart ,updateQty,dataCart, getCartD
 
     const [loading, setLoading] = useState(false)
     const [isModalOpen, setIsModalOpen] = useState(false)
+    const [modalShipping, setModalShipping] = useState(false)
 
     useEffect(() => {
         let token = localStorage.getItem('token')
@@ -74,11 +76,16 @@ const Cart = ({stateAddTransaction,stateDeleteCart ,updateQty,dataCart, getCartD
         Axios.post(ApiUrl + 'products/estimated-ongkir/all', data)
         .then((res) => {
             try {
-                if(res.data.error) throw new Error
-                let estTermurah = res.data.dataOngkir[0].costs.map((val, i) => {
-                    return {ongkir : val.cost[0].value, est : val.cost[0].etd}
-                })
-                setDataOngkir({...dataOngkir, gudangAsal : res.data.dataGudang, addressUser : res.data.dataUser, ongkirRate : estTermurah.sort((a, b) => b.ongkir - a.ongkir)})
+                if(res.data.error){
+                    if(res.data.message === 'User belum memiliki alamat'){
+                        setModalShipping(true)
+                    }
+                }else{
+                    let estTermurah = res.data.dataOngkir[0].costs.map((val, i) => {
+                        return {ongkir : val.cost[0].value, est : val.cost[0].etd}
+                    })
+                    setDataOngkir({...dataOngkir, gudangAsal : res.data.dataGudang, addressUser : res.data.dataUser, ongkirRate : estTermurah.sort((a, b) => b.ongkir - a.ongkir)})
+                }
                 
             } catch (error) {
                 console.log(error)
@@ -151,6 +158,7 @@ const Cart = ({stateAddTransaction,stateDeleteCart ,updateQty,dataCart, getCartD
         return (
             <div className='container' style={{paddingTop : 120}}>
                 <ModalToPayment modalOpen={isModalOpen} />
+                <ModalShipping modalOpen={modalShipping} />
                 <div className='row'>
                     <div className='col-md-8'>
                         <div className='border-bottom row pt-2 pb-2 pl-1'>

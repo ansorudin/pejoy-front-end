@@ -8,13 +8,35 @@ import { getUsersShippingAddress, onDeleteShippingAddress } from '../../Redux/Ac
 import './UserProfile.css';
 
 import NotFound from './../../Support/Images/Not Found.webp';
+import Axios from 'axios';
+import { UrlAPI } from '../../Support/Constants/UrlAPI';
+import { ApiUrl } from '../../Constant/ApiUrl';
 
 export class ShippingAddressLists extends Component{
+
+    state={
+        active : false
+    }
 
     componentDidMount(){
         const token = localStorage.getItem('token')
 
         this.props.getUsersShippingAddress(token)
+    }
+
+    updateMainAddress = (id) => {
+        const token = localStorage.getItem('token')
+        Axios.post(ApiUrl + 'member/shipping-address/edit-main-address', {id : id, token : token})
+        .then((res) => {
+            if(res.data.error){
+                console.log('update gagal')
+            }else{
+                this.props.getUsersShippingAddress(token)
+            }
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     mapUsersShippingAddress = () => {
@@ -33,6 +55,14 @@ export class ShippingAddressLists extends Component{
                                     </span>
                                 :
                                     null
+                            }
+                            {
+                                value.is_main_address === 1?
+                                    null
+                                    :
+                                <div onClick={() => this.updateMainAddress(value.id)} style={{cursor : 'pointer'}} className="px-2 py-1 rounded pa-bg-info pa-light">
+                                    Set main Address
+                                </div>
                             }
                         </div>
                     </div>
