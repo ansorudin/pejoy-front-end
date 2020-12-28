@@ -39,6 +39,7 @@ export class Footer extends React.Component {
     }
 
     onStartChat = () => {
+
         let room = 'customer_' + this.email.value
         let email = this.email.value
 

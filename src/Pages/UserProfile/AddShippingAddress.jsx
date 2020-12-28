@@ -337,4 +337,4 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = { onSaveShippingAddress, onGetProvinceIdRajaOngkir, onGetCityIdRajaOngkir }
 
-export default GoogleApiWrapper({ apiKey: ('AIzaSyDRibTto-9-y2x18URkKqx3JruKW1Y7wE8') })(connect(mapStateToProps, mapDispatchToProps)(AddShippingAddress))
+export default GoogleApiWrapper({ apiKey: (process.env.REACT_APP_GOOGLE_MAPS_ID) })(connect(mapStateToProps, mapDispatchToProps)(AddShippingAddress))

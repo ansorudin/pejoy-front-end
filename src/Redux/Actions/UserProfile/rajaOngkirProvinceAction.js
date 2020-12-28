@@ -8,7 +8,7 @@ export const onGetProvinceIdRajaOngkir = () => {
             type: RAJAONGKIRPROVINCE_LOADING
         })
 
-        Axios.get(UrlAPI + 'member/shipping-address/get-raja-ongkir-province')
+        Axios.get(process.env.REACT_APP_API_URL + 'member/shipping-address/get-raja-ongkir-province')
         .then((res) => {
             if(res.data.error){
                 dispatch({

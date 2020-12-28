@@ -9,7 +9,7 @@ export const getCartData = (token) => {
             type: CART_LOADING
         })
         try {
-            let res = await Axios.post(ApiUrl + 'products/cart', {token : token})
+            let res = await Axios.post(process.env.REACT_APP_API_URL + 'products/cart', {token : token})
                 if(res.data.error){
                     dispatch({
                         type: CART_ERROR,
@@ -37,7 +37,7 @@ export const updateQty = (data) => {
             type : UPDATE_CART_LOADING
         })
         try {
-            let res = await Axios.patch(ApiUrl + 'products/cart/update-cart', data)
+            let res = await Axios.patch(process.env.REACT_APP_API_URL + 'products/cart/update-cart', data)
                 if(res.data.error){
                     dispatch({
                         type : UPDATE_CART_ERROR,
@@ -66,7 +66,7 @@ export const deleteCart = (id) => {
             type : DELETE_CART_LOADING
         })
 
-        Axios.delete(ApiUrl + 'products/cart/delete-cart/' + id)
+        Axios.delete(process.env.REACT_APP_API_URL + 'products/cart/delete-cart/' + id)
         .then((res) => {
             if(res.data.error){
                 dispatch({

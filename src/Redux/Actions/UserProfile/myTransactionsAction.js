@@ -8,7 +8,7 @@ export const getMyTransactions = (data) => {
             type: MYTRANSACTIONS_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/transactions', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'member/transactions', data)
         .then((res) => {
             console.log(res.data)
             if(res.data.error){
@@ -38,7 +38,7 @@ export const onExpiredTransaction = (dataUser, dataTransaction) => {
             type: MYTRANSACTIONS_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/expired-transaction', dataTransaction)
+        Axios.post(process.env.REACT_APP_API_URL + 'member/expired-transaction', dataTransaction)
         .then((res) => {
             console.log(res)
             if(res.data.error){
@@ -47,7 +47,7 @@ export const onExpiredTransaction = (dataUser, dataTransaction) => {
                     payload: res.data.message
                 })
             }else{
-                Axios.post(UrlAPI + 'member/transactions', dataUser)
+                Axios.post(process.env.REACT_APP_API_URL + 'member/transactions', dataUser)
                 .then((res) => {
                     console.log(res.data)
                     if(res.data.error){
@@ -79,7 +79,7 @@ export const confirmMyTransaction = (data) => {
             type: MYTRANSACTIONS_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/confirm-transaction', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'member/confirm-transaction', data)
         .then((res) => {
             console.log(res.data)
             if(res.data.error){

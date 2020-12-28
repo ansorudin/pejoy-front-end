@@ -205,3 +205,20 @@
     opacity: 1;
 }
 
+.container-carousel-left{
+    background-color : white;
+    z-index: 2;
+    transition: 500ms ease-in;
+}
+
+@media (max-width: 575.98px) { 
+    .signup-schema{
+        position: relative;
+        right: 0;
+        opacity: 1;
+        transition: 500ms ease-in;
+    }
+    .container-carousel-left{
+        display: none;
+    }
+}

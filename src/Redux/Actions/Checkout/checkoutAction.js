@@ -9,7 +9,7 @@ export const getUserCheckoutShippingAddress = (data) => {
             type: CHECKOUTSHIPPINGADDRESS_LOADING
         })
 
-        Axios.post(UrlAPI + 'checkout/checkout-shipping-address', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'checkout/checkout-shipping-address', data)
         .then((res) => {
             console.log(res.data)
             if(res.data.error){
@@ -39,7 +39,7 @@ export const geMyOrders = (data) => {
             type: CHECKOUTSHIPPINGADDRESS_LOADING
         })
 
-        Axios.post(UrlAPI + 'checkout/checkout-Myorders', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'checkout/checkout-Myorders', data)
         .then((res) => {
             console.log(res.data)
             if(res.data.error){

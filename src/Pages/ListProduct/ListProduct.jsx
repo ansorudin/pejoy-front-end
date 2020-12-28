@@ -238,9 +238,8 @@ const ListProduct = (props) => {
                     </div>
                 </div>
             </div>
-            <div className='row'>
-                <div className='col-12 col-md-3' style={{paddingRight : 30, paddingTop : 5, width : 270, }}>
-                    
+            <div className='row container-content-list'>
+                <div className='col-12 col-md-3 filter-product'>
                     <div>
                         <div onClick={() => setIsOpen({...isOpen, child_1 : !isOpen.child_1})} style={{display : 'flex',  alignItems : 'center', justifyContent : 'space-between'}} >
                             <p>Kategori</p>

@@ -8,7 +8,7 @@ export const getBestSellerProducts = () => {
             type: BESTSELLERPRODUCTS_LOADING
         })
 
-        Axios.get(UrlAPI + 'products-best-seller')
+        Axios.get(process.env.REACT_APP_API_URL + 'pejoy/products-best-seller')
         .then((res) => {
             if(res.data.error){
                 dispatch({

@@ -8,7 +8,7 @@ export const onGetDataStatistic = () => {
             type: DATASTATISTIC_LOADING
         })
 
-        Axios.get(UrlAPI + 'member/admin-dashboard/data-statistic')
+        Axios.get(process.env.REACT_APP_API_URL + 'member/admin-dashboard/data-statistic')
         .then((res) => {
             console.log(res)
             if(res.data.error){

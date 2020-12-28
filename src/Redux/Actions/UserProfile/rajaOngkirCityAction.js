@@ -8,7 +8,7 @@ export const onGetCityIdRajaOngkir = (data) => {
             type: RAJAONGKIRCITY_LOADING
         })
 
-        Axios.get(UrlAPI + 'member/shipping-address/get-raja-ongkir-city')
+        Axios.get(process.env.REACT_APP_API_URL + 'member/shipping-address/get-raja-ongkir-city')
         .then((res) => {
             console.log(res.data)
 

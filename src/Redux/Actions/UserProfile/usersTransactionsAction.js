@@ -8,7 +8,7 @@ export const getUsersTransactions = (data) => {
             type: USERSTRANSACTIONS_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/admin-dashboard/users-transaction/get-transactions', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'member/admin-dashboard/users-transaction/get-transactions', data)
         .then((res) => {
             console.log(res)
             if(res.data.error){

@@ -240,16 +240,17 @@ const DetailProduct = (props) => {
                                 </p>
                                 :
                                 <span>
-                                    <p style={{fontSize : 16}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (parseInt(dataApi.size[0].price)).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s></p>
+                                    <p style={{fontSize : 16}}><s>Rp. {size.uk === 'Pick a Size' ? dataApi.size && (parseInt(dataApi.size[0].price)).toLocaleString('id-ID')  : size.price.toLocaleString('id-ID')  }</s>
+                                    <span> ({dataApi.productInfo && dataApi.productInfo.discount}%)</span>
+                                    </p>
                                     <p style={{fontSize : 18, color : 'red'}}>
-                                        Now Rp. {' '}
+                                        Rp. {' '}
                                         {
                                             size.uk === 'Pick a Size' ? 
                                             dataApi.size && dataApi.productInfo && (dataApi.size[0].price - (dataApi.size[0].price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID')  
                                             : 
                                             dataApi.productInfo && (size.price - (size.price * (dataApi.productInfo.discount /100))).toLocaleString('id-ID') 
                                         }
-                                        <span> ({dataApi.productInfo && dataApi.productInfo.discount}%)</span>
                                     </p>
                                 </span>
                             }
@@ -335,7 +336,7 @@ const DetailProduct = (props) => {
                                                 val.discount !== 0 ?
                                                 <span>
                                                     <p><s> Rp. {(parseInt(val.price)).toLocaleString('id-ID')}</s></p>
-                                                    <p>Rp : {(val.price - (val.price * (val.discount / 100))).toLocaleString('id-ID')}</p>
+                                                    <p>Rp . {(val.price - (val.price * (val.discount / 100))).toLocaleString('id-ID')}</p>
                                                 </span>
                                                 :
                                                 <span>

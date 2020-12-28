@@ -8,7 +8,7 @@ export const getFlashSaleProducts = () => {
             type: FLASHSALE_LOADING
         })
 
-        Axios.get(UrlAPI + 'products-flash-sale')
+        Axios.get(process.env.REACT_APP_API_URL + 'pejoy/products-flash-sale')
         .then((res) => {
             if(res.data.error){
                 dispatch({

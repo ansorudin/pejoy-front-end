@@ -8,7 +8,7 @@ export const onGetDataUsers = (token) => {
             type: USERPROFILE_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/profile', {token})
+        Axios.post(process.env.REACT_APP_API_URL + 'member/profile', {token})
         .then((res) => {
             console.log(res)
             if(res.data.error){

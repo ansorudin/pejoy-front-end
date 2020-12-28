@@ -244,7 +244,7 @@ const SignupSchema = ({onClick, history, loginSuccess}) => {
             <h6>Create accout here</h6>
             <div className='social-auth'>
                 <GoogleLogin
-                clientId={'484227442752-uv4bai641h7vdjl9g83amlk46nq4alqa.apps.googleusercontent.com'}
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT}
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 render={renderProps => (
@@ -256,7 +256,7 @@ const SignupSchema = ({onClick, history, loginSuccess}) => {
                 </GoogleLogin>
 
                 <FacebookLogin
-                appId={'390305322240658'}
+                appId={process.env.REACT_APP_FACEBOOK_CLIENT}
                 autoLoad={false}
                 callback={responseFacebook}
                 render={renderProps => (

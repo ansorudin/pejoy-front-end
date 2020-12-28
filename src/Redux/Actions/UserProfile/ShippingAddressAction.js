@@ -8,7 +8,7 @@ export const onSaveShippingAddress = (data) => {
             type: SHIPPINGADDRESS_LOADING
         })
 
-        let res = await Axios.post(UrlAPI + 'member/shipping-address/add-address', data)
+        let res = await Axios.post(process.env.REACT_APP_API_URL + 'member/shipping-address/add-address', data)
         console.log(res)
 
         if(res.data.error){
@@ -32,7 +32,7 @@ export const onUpdateShippingAddress = (data) => {
         })
 
         try {
-            let res = await Axios.post(UrlAPI + 'member/shipping-address/update-address', data)
+            let res = await Axios.post(process.env.REACT_APP_API_URL + 'member/shipping-address/update-address', data)
             console.log(res)
 
             if(res.data.error){
@@ -62,7 +62,7 @@ export const onDeleteShippingAddress = (data) => {
             type: SHIPPINGADDRESS_LOADING
         })
 
-        Axios.delete(UrlAPI + 'member/shipping-address/delete-address/' + data.token + '/' + data.address_id)
+        Axios.delete(process.env.REACT_APP_API_URL + 'member/shipping-address/delete-address/' + data.token + '/' + data.address_id)
         .then((res) => {
             console.log(res)
             if(res.data.error){
@@ -92,7 +92,7 @@ export const getUsersShippingAddress = (token) => {
             type: SHIPPINGADDRESS_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/shipping-address', {token})
+        Axios.post(process.env.REACT_APP_API_URL + 'member/shipping-address', {token})
         .then((res) => {
             console.log(res)
             if(res.data.error){

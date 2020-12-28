@@ -23,6 +23,16 @@
     margin-bottom : 30px;
 }
 
+.filter-product{
+    padding-right : 30px; 
+    padding-top : 5px;
+    width : 270px; 
+}
+
+
+
+
+
 @media (max-width: 575.98px) { 
     .button-heart-list {
         bottom : 210px ;
@@ -31,4 +41,11 @@
     .container-card-product {
         margin-bottom : -30px;
     }
+    .filter-product{
+        display: none;
+    }
+    .container-content-list{
+        justify-content: center;
+    }
+    
  }

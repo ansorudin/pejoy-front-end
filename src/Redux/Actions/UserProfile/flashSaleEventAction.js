@@ -8,7 +8,7 @@ export const getAllDiscountProducts = () => {
             type: FLASHSALEEVENT_LOADING
         })
 
-        Axios.get(UrlAPI + 'member/admin-dashboard/flash-sale/get-products-discount')
+        Axios.get(process.env.REACT_APP_API_URL + 'member/admin-dashboard/flash-sale/get-products-discount')
         .then((res) => {
             console.log(res.data)
             if(res.data.error){
@@ -38,7 +38,7 @@ export const createFlashSaleEvent = (data) => {
             type: FLASHSALEEVENT_LOADING
         })
 
-        Axios.post(UrlAPI + 'member/admin-dashboard/flash-sale/create-flash-sale-event', data)
+        Axios.post(process.env.REACT_APP_API_URL + 'member/admin-dashboard/flash-sale/create-flash-sale-event', data)
         .then((res) => {
             console.log(res)
             if(res.data.error){

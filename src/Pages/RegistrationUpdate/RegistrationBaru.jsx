@@ -32,7 +32,7 @@ const RegistrationBaru = (props) => {
     return (
         <div className='container' style={{paddingTop : 190, paddingBottom : 110}}>
             <div className='row' style={{position : 'relative'}}>
-                <div className='col-md-7 p-5' style={{backgroundColor : 'white', zIndex : 2}}>
+                <div className='col-md-7 p-5 container-carousel-left'>
                     <Slider {...desktopSettings}>
                         <div className='banner-left-side'>
                             <Gambar1 />

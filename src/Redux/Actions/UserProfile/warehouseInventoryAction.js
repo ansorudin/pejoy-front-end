@@ -8,7 +8,7 @@ export const getWarehouseInventory = () => {
             type: WAREHOUSEINVENTORY_LOADING
         })
 
-        Axios.get(UrlAPI + 'member/admin-dashboard/warehouse-inventory')
+        Axios.get(process.env.REACT_APP_API_URL + 'member/admin-dashboard/warehouse-inventory')
         .then((res) => {
             console.log(res.data)
             if(res.data.error){

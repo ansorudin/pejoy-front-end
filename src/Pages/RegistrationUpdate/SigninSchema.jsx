@@ -193,7 +193,7 @@ const SigninSchema = ({onClick, history, onClickForgot}) => {
             <h6>Welcome Back</h6>
             <div className='social-auth'>
                 <GoogleLogin
-                clientId={'484227442752-uv4bai641h7vdjl9g83amlk46nq4alqa.apps.googleusercontent.com'}
+                clientId={process.env.REACT_APP_GOOGLE_CLIENT}
                 onSuccess={responseGoogle}
                 onFailure={responseGoogle}
                 render={renderProps => (
@@ -205,7 +205,7 @@ const SigninSchema = ({onClick, history, onClickForgot}) => {
                 </GoogleLogin>
 
                 <FacebookLogin
-                appId={'390305322240658'}
+                appId={process.env.REACT_APP_FACEBOOK_CLIENT}
                 autoLoad={false}
                 callback={responseFacebook}
                 render={renderProps => (
